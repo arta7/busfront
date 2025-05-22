@@ -38,8 +38,8 @@ const ContactUs = () => {
       <Grid container direction="column" marginTop="3rem" zIndex={'10'}>
         <Grid item>
           <Box marginBottom="4rem">
-            <Grid container spacing={{xs: 4, md: 10}} padding={{md: '0.2rem'}}>
-              {/* <Grid item xs={12} md={4}>
+            <Grid container  spacing={{xs: 4, md: 10}}  padding={{md: '0.2rem'}}>
+              <Grid item xs={12} md={4} >
                 <Cardall
                   padding={{
                     xs: '5rem 0rem 5rem',
@@ -67,14 +67,14 @@ const ContactUs = () => {
                     <Typography marginTop="4rem" color="textSecondary">
                       Visit our Help Center for FAQs or chat with a live agent.
                     </Typography>
-                    <Typography
+                    {/* <Typography
                       variant={'h4'}
                       fontWeight="600"
                       marginTop="5rem"
                     >
                       Live Chat Hours:
-                    </Typography>
-                    <Typography
+                    </Typography> */}
+                    {/* <Typography
                       marginTop="2rem"
                       variant={'h5'}
                       fontWeight={'600'}
@@ -83,11 +83,13 @@ const ContactUs = () => {
                     </Typography>
                     <Typography marginTop={'2 rem'} color={'textSecondary'}>
                       6:00 am - 4:00 pm PT
-                    </Typography>
+                    </Typography> */}
                   </CardContent>
                 </Cardall>
-              </Grid> */}
-              <Grid item xs={8} md={6}>
+              </Grid>
+
+
+               <Grid item xs={12} md={4}>
                 <Cardall
                   padding={{
                     xs: '5rem 0rem 5rem',
@@ -138,7 +140,9 @@ const ContactUs = () => {
                   </CardContent>
                 </Cardall>
               </Grid>
-              <Grid item xs={12} md={6}>
+
+
+             <Grid item xs={16} md={4}>
                 <Cardall
                   padding={{
                     xs: '5rem 0rem 5rem',
@@ -171,6 +175,8 @@ const ContactUs = () => {
                   </CardContent>
                 </Cardall>
               </Grid>
+
+              
             </Grid>
           </Box>
         </Grid>

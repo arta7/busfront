@@ -35,7 +35,7 @@ export default function BusTicket({
   data,
   requestNumber,props
 
-}: BusTicketData) {
+}: any) {
 
  
 
@@ -58,10 +58,10 @@ export default function BusTicket({
           justifyContent: 'space-between',
           width: {xs: '100%', lg: '80%'},
           height: {xs: '11rem', sm: '12rem', md: '14rem'},
-          borderRadius: {xs: '10px', sm: '0.882vw'},
+          borderRadius: 2,
           border: '1px solid rgba(0, 0, 0, 0.2)',
           boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
-          backgroundColor: '#e6f2ff',
+          backgroundColor: 'rgb(1,166,147,0.7)',
           
         }}
         
@@ -96,7 +96,7 @@ export default function BusTicket({
              <Box
                 sx={{
                  
-                  borderRadius: '1.7vw',
+                  borderRadius: 2,
                   // minWidth: 'fit-content',
                  
                   padding: '2px 8px',
@@ -175,7 +175,7 @@ export default function BusTicket({
             <Box
                 sx={{
                   backgroundColor: 'white',
-                  borderRadius: '1.7vw',
+                  borderRadius: 2,
                    maxWidth: 'fit-content',
                   padding: '2px 8px',
                   marginRight: {xs: '3px', sm: '8px'},
@@ -206,17 +206,18 @@ export default function BusTicket({
           <Box className="Price" sx={{display: 'flex'}}>
             <Typography
               sx={{
-                fontSize: {xs: '23px', sm: '17px', md: '18px'},
+                fontSize: {xs: '20px', sm: '27px', md: '30px'},
+                paddingRight:1
                 // marginTop: '1.4vw',
               }}
             >
-              ریال
+                ریال  
             </Typography>
             <Typography
               className="bus--price"
               sx={{
                 fontStyle: 'normal',
-                fontWeight: '400',
+                // fontWeight: '400',
                 fontSize: {xs: '20px', sm: '27px', md: '30px'},
                 color: 'rgba(0, 0, 0, 0.7)',
               }}
@@ -230,7 +231,7 @@ export default function BusTicket({
               fontFamily: 'Roboto',
               fontWeight: '400',
               fontSize: {xs: '13px', sm: '17px', md: '19px'},
-              color:  seatsLeft  > 0 ? 'rgba(0, 0, 0, 0.7)' : 'red',
+              color:  seatsLeft  > 3 ? 'rgba(0, 0, 0, 0.7)' : 'red',
             }}
           >
            باقیمانده  {seatsLeft}  

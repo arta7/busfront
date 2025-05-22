@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Typography, Box, Link} from '@mui/material';
+import {Container, Typography, Box} from '@mui/material';
 import TermsAndPolicy_1 from '../../assets/termsAndPolicy_1.avif';
 import TermsAndPolicy_2 from '../../assets/termsAndPolicy_2.avif';
 import TermsAndPolicy_3 from '../../assets/termsAndPolicy_3.jpg';
@@ -53,13 +53,13 @@ const PrivacyPolicy = () => {
               using the Service, You agree to the collection and use of
               information in accordance with this Privacy Policy. Visit busify
               at{' '}
-              <Link
+              {/* <Link
                 href="https://busify.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 https://busify.vercel.app/
-              </Link>
+              </Link> */}
               .
             </Typography>
             <Typography variant="h5" component="h2">
@@ -195,13 +195,13 @@ const PrivacyPolicy = () => {
                 <li>
                   <Typography variant="body2">
                     <strong>Website</strong> refers to Busify, accessible from{' '}
-                    <Link
+                    {/* <Link
                       href="https://busify.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       https://busify.vercel.app/
-                    </Link>
+                    </Link> */}
                   </Typography>
                 </li>
                 <li>

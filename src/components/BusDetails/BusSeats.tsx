@@ -1,54 +1,48 @@
 // import React, { useState, useMemo } from "react";
 
-// import  LikeUnlike  from "./LikeUnlike";
-// // import { BusSeatScreenStyle } from '../../styles';
-// // import { useTheme } from '@react-navigation/native';
-// // import { SH, SF, SW, Colors,Fonts } from "../../utils";
+// import LikeUnlike from "./LikeUnlike";
+// import { MarginOutlined } from "@mui/icons-material";
+
 
 // const SEAT_STATUS = {
 //   AVAILABLE: 1,
 //   BOOKED: 2,
 // };
 
-// const BusSeat = ({ chairNumber, status, index, RowSeats, data, setData, BusPerson, setBusPerson, onPress,props }) => {
-// //   const { Colors } = useTheme();
-//   var datarow = RowSeats;
-//   // const BusSeatScreenStyles = useMemo(() => BusSeatScreenStyle(Colors), [Colors]);
-
+// const BusSeat = ({ chairNumber, status, index, RowSeats, data, setData, BusPerson, setBusPerson, onPress }) => {
 //   const getStatusColor = () => {
 //     switch (status) {
 //       case 0:
-//         return '#c4c4c4';
+//         return 'rgba(161, 162, 162, 0.5)';
 //       case 2:
-//         return '#53eff5'; // Available (adjust based on your preference)
+//         return '#1c38bb';
 //       case 3:
-//         return 'pink'; // Occupied (adjust based on your preference)
-//         case 1:
-//           return 'yellow';
-//         default:
-//         return  'red' //Colors.theme_background; // Unknown (adjust based on your preference)
+//         return '#1c38bb';
+//       case 1:
+//         return '#1c38bb';
+//       default:
+//         return 'rgb(2, 146, 129)';
 //     }
 //   };
-//   return (
 
-//     <div style={{ ...styles.seat, index == datarow ? { marginLeft: '10%' } : { marginHorizontal: '1%' }}>
+  
+
+//   //console.log({index})
+//   //console.log({RowSeats})
+
+//   let marginLeft = index === RowSeats ? '5%' : '1%';
+
+//   return (
+//     <div style={{ ...styles.seat ,marginLeft: marginLeft,}}>
 //       <LikeUnlike
 //         text={status == 2 ? 'آقا' : status == 3 ? 'خانم' : chairNumber}
 //         LikeColour={getStatusColor()}
 //         UnlikeColour={getStatusColor()}
 //         index={status}
 //         data={data}
-//         DefaultStyle={
-//           // [BusSeatScreenStyles.BusSeatBox, 
-//           { height: '50px',  width:'35px', }
-//         // ]
-//         }
-//         ViewStyle={
-//           //[BusSeatScreenStyles.BuscusionStyle
-//           { height: '3px'}
-//         //]
-//         }
-//         onPress={onPress}
+//         DefaultStyle={{ height: '35px', width: '25px', }}
+//         ViewStyle={{ height: '3px', }}
+//         //  onPress={onPress}
 //         setData={setData}
 //         BusPerson={BusPerson}
 //         setBusPerson={setBusPerson}
@@ -61,13 +55,12 @@
 //   const [selectedSeats, setSelectedSeats] = useState([]);
 
 //   const handleSeatPress = (chairNumber) => {
-//     console.log('chairnumber')
 //     const isSelected = selectedSeats.includes(chairNumber);
 //     setSelectedSeats(isSelected ? selectedSeats.filter(seat => seat !== chairNumber) : [...selectedSeats, chairNumber]);
 //   };
 
 //   const renderRow = (row) => {
-//     const seats = data?.seates?.filter((seat) => seat.row === row).filter(s=>s.chairNumber !=-1);
+//     const seats = data?.seates?.filter((seat) => seat.row === row).filter(s => s.chairNumber != -1);
 //     const isTwoColumns = seats.length === 2;
 //     var RowSeats = data?.seates?.length > 0 && data?.seates?.filter(a => a.row == 1).length == 3 ? 1 : 2
 //     return (
@@ -93,7 +86,6 @@
 
 //   return (
 //     <div style={styles.container}>
-
 //       {data?.seates?.reduce((acc, seat) => {
 //         if (!acc.currentRow || acc.currentRow !== seat.row) {
 //           acc.currentRow = seat.row;
@@ -108,29 +100,29 @@
 // const styles = {
 //   container: {
 //     flex: 1,
-//     flexDirection: 'column'
-//     //,borderWidth:1,marginBottom:5,borderTopWidth:0,borderBottomWidth:0,borderColor:'transparent'
+//     flexDirection: 'column',
 //   },
 //   row: {
 //     flexDirection: 'row',
-//     justifyContent: 'flex-end',
-//     marginBottom: 10, width: '87%',marginHorizontal:'1%'
+//     // justifyContent: 'center',
+//     // marginBottom: '10px',
+//     width: '97%'
+//     // ,marginLeft: '10px',marginRight:'1%'
+//     ,display:'flex',
 //   },
 //   seat: {
-//     padding: 10,
+//     padding: '10px',
 //     alignItems: 'center',
-//     justifyContent: 'center'
-//     //, marginHorizontal: '2%'
+//     justifyContent: 'center',
 //   },
 //   seatText: {
-//     fontSize: '12px',
-//     // fontFamily:Fonts.Poppins_Italic
+//     fontSize: '8px',
 //   },
 //   seatTwoColumns: {
-//     flex: 0.5,
+//     flex: 0.25, 
 //   },
 //   seatFourColumns: {
-//     flex: 0.25,
+//     flex: 0.2,display:'flex',
 //   },
 // };
 
@@ -138,50 +130,45 @@
 
 
 import React, { useState, useMemo } from "react";
-
 import LikeUnlike from "./LikeUnlike";
-import { MarginOutlined } from "@mui/icons-material";
-
 
 const SEAT_STATUS = {
   AVAILABLE: 1,
   BOOKED: 2,
 };
 
-const BusSeat = ({ chairNumber, status, index, RowSeats, data, setData, BusPerson, setBusPerson, onPress }) => {
+const BusSeat = ({ chairNumber, status, index, RowSeats, data, setData, BusPerson, setBusPerson, onPress, isSpacer }) => {
   const getStatusColor = () => {
     switch (status) {
       case 0:
-        return '#c4c4c4';
+        return 'rgba(161, 162, 162, 0.5)';
       case 2:
-        return '#53eff5';
+        return '#1c38bb';
       case 3:
-        return 'pink';
+        return '#1c38bb';
       case 1:
-        return 'yellow';
+        return '#1c38bb';
       default:
-        return 'red';
+        return 'rgb(2, 146, 129)';
     }
   };
 
-  
+  let marginLeft = index === RowSeats ? '1%' : '1%';
 
-  //console.log({index})
-  //console.log({RowSeats})
-
-  let marginLeft = index === RowSeats ? '5%' : '1%';
+  if (isSpacer) {
+    return <div style={{ width: '5%', height: '35px' }} />; // Adjust height to match seat height
+  }
 
   return (
-    <div style={{ ...styles.seat ,marginLeft: marginLeft,}}>
+    <div style={{ ...styles.seat, marginLeft: marginLeft }}>
       <LikeUnlike
         text={status == 2 ? 'آقا' : status == 3 ? 'خانم' : chairNumber}
         LikeColour={getStatusColor()}
         UnlikeColour={getStatusColor()}
         index={status}
         data={data}
-        DefaultStyle={{ height: '35px', width: '25px', }}
-        ViewStyle={{ height: '3px', }}
-         onPress={onPress}
+        DefaultStyle={{ height: '35px', width: '25px' }}
+        ViewStyle={{ height: '3px' }}
         setData={setData}
         BusPerson={BusPerson}
         setBusPerson={setBusPerson}
@@ -202,23 +189,32 @@ const BusSeats = ({ data, setData, BusPerson, setBusPerson }) => {
     const seats = data?.seates?.filter((seat) => seat.row === row).filter(s => s.chairNumber != -1);
     const isTwoColumns = seats.length === 2;
     var RowSeats = data?.seates?.length > 0 && data?.seates?.filter(a => a.row == 1).length == 3 ? 1 : 2
+
+    const seatElements = [];
+    seats?.forEach((seat, index) => {
+      seatElements.push(
+        <BusSeat
+          key={seat.chairNumber}
+          chairNumber={seat.chairNumber}
+          status={seat.status}
+          onPress={() => handleSeatPress(seat.chairNumber)}
+          style={isTwoColumns ? styles.seatTwoColumns : styles.seatFourColumns}
+          index={seat.column}
+          RowSeats={RowSeats}
+          data={data}
+          setData={setData}
+          BusPerson={BusPerson}
+          setBusPerson={setBusPerson}
+        />
+      );
+      if (RowSeats === 1 && index === 0) {  //Insert after the first seat when there are 3 seats
+          seatElements.push(<BusSeat key={`spacer-${row}`} isSpacer={true} />);
+      }
+    });
+
     return (
       <div style={styles.row}>
-        {seats?.map((seat, index) => (
-          <BusSeat
-            key={seat.chairNumber}
-            chairNumber={seat.chairNumber}
-            status={seat.status}
-            onPress={() => handleSeatPress(seat.chairNumber)}
-            style={isTwoColumns ? styles.seatTwoColumns : styles.seatFourColumns}
-            index={seat.column}
-            RowSeats={RowSeats}
-            data={data}
-            setData={setData}
-            BusPerson={BusPerson}
-            setBusPerson={setBusPerson}
-          />
-        ))}
+        {seatElements}
       </div>
     );
   };
@@ -243,11 +239,8 @@ const styles = {
   },
   row: {
     flexDirection: 'row',
-    // justifyContent: 'center',
-    // marginBottom: '10px',
-    width: '97%'
-    // ,marginLeft: '10px',marginRight:'1%'
-    ,display:'flex',
+    width: '97%',
+    display: 'flex',
   },
   seat: {
     padding: '10px',
@@ -258,10 +251,14 @@ const styles = {
     fontSize: '8px',
   },
   seatTwoColumns: {
-    flex: 0.75, 
+  width: '45%', //Take up 45% of space.
+        maxWidth: '45%', //Do not scale beyond 45%
+        display: 'flex',
   },
   seatFourColumns: {
-    flex: 0.85,display:'flex',
+   width: '30%', //Take up 30% of space.
+    maxWidth: '30%', //Do not scale beyond 30%
+    display: 'flex',
   },
 };
 

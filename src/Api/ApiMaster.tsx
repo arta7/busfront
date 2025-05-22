@@ -1,6 +1,7 @@
 
  import axios from 'axios'
 import {Address} from './Address'
+import { useNavigate } from "react-router-dom";
 // import Toast from 'react-native-simple-toast';
 // import { RouteName } from '../routes';
 
@@ -46,7 +47,7 @@ export function LoginAPI(_phone,self,userData,setUserData,setLoading)
   })
   .then( (response)=> {
          
-           console.log('response login Data',response.data.status) 
+          //  console.log('response login Data',response.data.status) 
           if(response.data.status == 1)
             {
                 localStorage.setItem('Mobile',_phone)
@@ -55,16 +56,20 @@ export function LoginAPI(_phone,self,userData,setUserData,setLoading)
               DatesStep[0].Mobile = _phone;
               
               setUserData(myNextList)
+              localStorage.setItem('storageData',JSON.stringify(myNextList))
              
-              alert(response.data.message);
+        
+              // alert(response.data.message);
           
         //    self.navigate(RouteName.OTP_VERYFY_SCREEN)
           }
-            setLoading(false)
+         
+            // setLoading(false)
         
   })
   .catch( (error)=> {
-    setLoading(false)
+  
+    // setLoading(false)
     console.log('errors',error)  
    
   })
@@ -72,13 +77,13 @@ export function LoginAPI(_phone,self,userData,setUserData,setLoading)
 
 
 
-export function VerifyAPI(_phone,_code,self,setLoading,userData,setUserData)
+export function VerifyAPI(_phone,_code,self,setLoading,userData,setUserData,sendnavigate)
 {
+  //  const navigate = useNavigate();
     var params ={
       "Phone":_phone,
       "VerificationCode":_code
     }
-    
   axios({
     url: Address.URL + Address.Login.verify,
     method: 'POST',
@@ -93,6 +98,7 @@ export function VerifyAPI(_phone,_code,self,setLoading,userData,setUserData)
           console.log('response verify Data',response) 
           if(response.data.status == 1)
             {
+             
                 localStorage.setItem('Token',response.data.data.token)
                 localStorage.setItem('Name',response.data.data.firstName + ' ' + response.data.data.lastName)
               const myNextList = [...userData];
@@ -100,22 +106,29 @@ export function VerifyAPI(_phone,_code,self,setLoading,userData,setUserData)
               DatesStep[0].Name  = response.data.data.firstName + ' ' + response.data.data.lastName ;
               DatesStep[0].Token  = response.data.data.token ;
               setUserData(myNextList)
+              localStorage.setItem('storageData',JSON.stringify(myNextList))
               alert(response.data.message);
-              
-        
-            //  self.replace(RouteName.HOME_SCREEN)
+             
+               sendnavigate(true)
+              self('/')
+            // navigate('/Home')
+             
             }
             else
             {
                 alert(response.data.errors.VerificationCode);
+                  sendnavigate(false)
             }
             setLoading(false)
+            return true;
         
   })
   .catch( (error)=> {
+      sendnavigate(false)
     setLoading(false)
     alert('کد تایید نامعتبر است');
     console.log('errors',error)  
+       return false;
   })
 }
 
@@ -305,7 +318,7 @@ export function busPreReserves(_requestNumber,_sourceCode,_busCode,HeaderValue,_
         
   })
   .catch( (error)=> {
-    console.log('errors busPreReserves : ',error)  
+    alert(error.response.data.message)  
     setLoading(false)
   })
 }
@@ -334,6 +347,7 @@ export function ChargeAccount(_amount,setLoading,axisConfigToken,_setReturnValue
 
 export function BillingFactor(_factorId,setLoading,axisConfigToken,_setReturnValue,self)
 {
+ 
     setLoading(true)
     
     axios.get(Address.URL + Address.ChargeAccount.BillingFactor + _factorId,axisConfigToken)
@@ -344,10 +358,33 @@ export function BillingFactor(_factorId,setLoading,axisConfigToken,_setReturnVal
          // SetData(response.data.data)
          _setReturnValue(response.data.data)
           setLoading(false)
-          console.log('response bus BillingFactor : ',response.data) 
-          Linking.openURL(response.data.data)
+          console.log('response bus BillingFactor : ',response.data.data) 
+          window.open(response.data.data,"_self");
+
+      //     window.addEventListener('message', handlePaymentMessage, false);
+
+      // function handlePaymentMessage(event) {
+      //   console.log('event',event)
+      //   // Optionally check for the origin for security
+      //   if (event.origin == response.data.data) return; // Replace with your actual payment domain
+
+      //   if (event.data === "app://Kalanholding") {
+      //     console.log('test redirect')
+      //     // Successfully paid, redirect the current window
+      //     // navigate('/success'); // Redirect or perform the desired action
+      //   }
+      // }
+      
+      // return () => window.removeEventListener('message', handlePaymentMessage);
+      //     let history = useHistory();
+
+      //  history.push("/home");
+    
         
-  })
+  }
+
+
+)
   .catch( (error)=> {
     console.log('errors bus charge account  : ',error)  
     setLoading(false)
@@ -355,106 +392,3 @@ export function BillingFactor(_factorId,setLoading,axisConfigToken,_setReturnVal
 }
 
 
-
-
-export function SpecialPrograms(_currentdate,_setData,_updateIndicator)
-{
-     
-     _updateIndicator(true)
-  axios.get(Address.URL + Address.Main.SpecialProgram + _currentdate,axisConfig)
-  .then( (response)=> {
-         
-        console.log('response data : ',response.data)
-        _setData(response.data)
-           _updateIndicator(false) 
-  })
-  .catch( (error)=> {
-    _updateIndicator(false)
-    alert(error.response.data.data[0].messages[0].message);
-    console.log('errors',error.response.data)  
-  })
-}
-
-export function StoreFeature(_currentdate,_setData,_updateIndicator)
-{
-     
-     _updateIndicator(true)
-  axios.get(Address.URL + Address.Main.StoreFeature + _currentdate,axisConfig)
-  .then( (response)=> {
-         
-        console.log('response data : ',response.data)
-        _setData(response.data)
-         _updateIndicator(false) 
-  })
-  .catch( (error)=> {
-    _updateIndicator(false)
-    alert(error.response.data.data[0].messages[0].message);
-    console.log('errors',error.response.data)  
-  })
-}
-
-
-export function AllTags(_setData,_updateIndicator,_returnItem)
-{
-     
-     _updateIndicator(true)
-  axios.get(Address.URL + Address.Main.Tags,axisConfig)
-  .then( (response)=> {
-         
-        console.log('response data  tags : ',response.data)
-
-        if(response.data.length > 0)
-        {
-        var PushData = [];
-        PushData.push({
-            id: 0,
-            name: "All",
-            locale: "en",
-            published_at: "2021-11-26T23:39:51.000Z",
-            created_at: "2021-11-26T23:39:00.000Z",
-            updated_at: "2021-11-26T23:39:52.000Z",
-            localizations: [ ]
-            })
-        for(let i=0;i<response.data.length;i++)
-        {
-            PushData.push(response.data[i])
-        }
-
-        
-            _returnItem(0)
-        }
-
-         
-
-        _setData(PushData)
-         _updateIndicator(false) 
-  })
-  .catch( (error)=> {
-    _updateIndicator(false)
-    alert(error.response.data.data[0].messages[0].message);
-    console.log('errors',error.response.data)  
-  })
-}
-
-
-export function AllProgramTags(_tagId,_setData,_updateIndicator)
-{
-    var Addr = null
-     _updateIndicator(true)
-     if(_tagId == 0)
-      Addr = axios.get(Address.URL + Address.Main.AllProgramTags,axisConfig)
-   else 
-   Addr =  axios.get(Address.URL + Address.Main.ProgramTags+_tagId,axisConfig)
-  
-  Addr.then( (response)=> {
-         
-        console.log('response program tasg data : ',response.data)
-        _setData(response.data)
-         _updateIndicator(false) 
-  })
-  .catch( (error)=> {
-    _updateIndicator(false)
-    alert(error.response.data.data[0].messages[0].message);
-    console.log('errors program tasg',error.response.data)  
-  })
-}

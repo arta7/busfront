@@ -1,5 +1,5 @@
 // Define types for the frontend here
-import {TooltipProps} from '@mui/material/Tooltip';
+import { TooltipProps } from '@mui/material/Tooltip';
 
 export interface CustomEmptyProps {
   title?: string;
@@ -36,11 +36,11 @@ type BusDetailsType = {
   from?: string;
   to?: string;
   scheduleId?: string;
-  carType?:string;
-  companyName?:string;
-  description?:string;
-  data:any,
-  requestNumber:any
+  carType?: string;
+  companyName?: string;
+  description?: string;
+  data: any,
+  requestNumber: any
 };
 
 type BusTicketData = {
@@ -52,6 +52,12 @@ type BusTicketData = {
   from?: string;
   to?: string;
   scheduleId: string;
+  destinationTerminal: string;
+  carType: string;
+  companyName: string;
+  moveDateTime: string;
+  description:string;
+  originCity:string;
 };
 
 type LayoutProps = {

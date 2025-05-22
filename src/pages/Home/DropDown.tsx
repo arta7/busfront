@@ -107,7 +107,7 @@ const DropdownComponent = ({
             display: 'flex',
             alignItems: 'center',
             border: '1px solid grey',
-            borderRadius: '8px',
+            borderRadius: '5px',
             overflow: 'hidden',
             height: '50px',
             ...customStyle,

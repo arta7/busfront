@@ -33,10 +33,9 @@ function BusDetailsCard({carType,companyName}) {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: {xs: '10px', sm: '2px', md: '10px'},
-          margin: {xs: '0', md: '0 0.5rem'},
-          flexDirection:'row',height:'30%'
-
+          // gap: {xs: '10px', sm: '2px', md: '10px'},
+          // margin: {xs: '0', md: '0 0.5rem'},
+          flexDirection:'row'
         }}
       >
         <Box
@@ -55,10 +54,10 @@ function BusDetailsCard({carType,companyName}) {
               fontSize={{xs: '0.8rem', sm: '0.8rem', md: '1rem'}}
               color={theme.palette.common.black}
             >
-              مبدا
+              Source
             </Typography>
             <Typography
-              variant="h4"
+              variant="h6"
               fontSize={{xs: '1rem', sm: '0.8rem', md: '1.3rem'}}
               color={theme.palette.secondary.main}
             >
@@ -82,10 +81,10 @@ function BusDetailsCard({carType,companyName}) {
               fontSize={{xs: '0.8rem', sm: '0.8rem', md: '1rem'}}
               color={theme.palette.common.black}
             >
-              مقصد
+              Destination
             </Typography>
             <Typography
-              variant="h4"
+              variant="h6"
               fontSize={{xs: '1rem', sm: '0.8rem', md: '1.3rem'}}
               color={theme.palette.secondary.main}
             >
@@ -93,16 +92,10 @@ function BusDetailsCard({carType,companyName}) {
             </Typography>
           </Box>
         </Box>
-       
-
-
-      
-
-
       </Box>
     
 
-      <Box sx={{display: 'flex', alignItems: 'center', gap: '10px',height:'30%'}}>
+      <Box sx={{display: 'flex', alignItems: 'center', gap: '10px'}}>
         <Icon src={scheduleIcon} alt="Schedule Icon" />
         <Box>
           <Typography
@@ -110,10 +103,10 @@ function BusDetailsCard({carType,companyName}) {
             fontSize={{xs: '0.8rem', sm: '0.8rem', md: '1rem'}}
             color={theme.palette.common.black}
           >
-            تاریخ و زمان
+           Date & Time
           </Typography>
           <Typography
-            variant="h4"
+            variant="h6"
             fontSize={{xs: '1.25rem', sm: '1rem', md: '1.3rem'}}
             color={theme.palette.secondary.main}
           >
@@ -131,10 +124,10 @@ function BusDetailsCard({carType,companyName}) {
             fontSize={{xs: '0.8rem', sm: '0.8rem', md: '1rem'}}
             color={theme.palette.common.black}
           >
-           امکانات
+           Type :
           </Typography>
           <Typography
-            variant="h4"
+            variant="h6"
             fontSize={{xs: '1.25rem', sm: '1rem', md: '1.3rem'}}
             color={theme.palette.secondary.main}
           >

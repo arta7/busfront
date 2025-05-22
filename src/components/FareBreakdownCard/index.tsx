@@ -9,6 +9,7 @@ const FareBreakdown = styled(Box)`
   border-radius: 8px;
   margin: 2rem 0;
   padding: 1rem;
+  direction:ltr
 `;
 
 export default function FareBreakdownCard({price,counts,totalPrice}) {
@@ -24,14 +25,14 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
         }}
       >
         <Typography variant="h6" color={theme.palette.secondary.main}>
-        قیمت بلیط
+        Ticket Price
         </Typography>
         <Box sx={{display: 'flex', gap: '2px'}}>
          
           <Typography variant="h6" color={theme.palette.secondary.main}>
             {price}
           </Typography>
-          <Typography>ریال </Typography>
+          <Typography>Rial </Typography>
         </Box>
       </Box>
       <Box
@@ -42,11 +43,11 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
         }}
       >
         <Typography variant="h6" color={theme.palette.secondary.main}>
-         تعداد بلیط
+       Ticket Counts
         </Typography>
         <Box sx={{display: 'flex', gap: '2px'}}>
           <Typography variant="h6" color={theme.palette.secondary.main}>
-            {counts}  عدد
+            {counts}  
           </Typography>
         </Box>
       </Box>
@@ -66,7 +67,7 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
             fontWeight: {xs: 600, md: 700},
           }}
         >
-          قیمت نهایی
+         End Price
         </Typography>
         <Box sx={{display: 'flex', gap: '2px'}}>
          
@@ -75,7 +76,7 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
           >
            {price * counts}
           </Typography>
-          <Typography fontWeight={600}> ریال </Typography>
+          <Typography fontWeight={600}> Rial </Typography>
         </Box>
       </Box>
     </FareBreakdown>

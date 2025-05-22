@@ -14,9 +14,19 @@ module.exports = {
     sourceType: 'module',
     extraFileExtensions: ['.json'],
   },
+  "ignorePatterns": ["src/"],
   plugins: ['react-refresh', '@typescript-eslint'],
   rules: {
     'react-refresh/only-export-components': 'warn',
     'no-console': 'warn',
   },
 };
+
+// module.exports = {
+//   extends: 'eslint:recommended',
+//   rules: {
+//     // Add any rules you want to override or set to "off"
+//     "no-console": "off", // Example to ignore console warnings
+//     // Add more rules as needed
+//   },
+// };

@@ -54,6 +54,8 @@ function DatePickers(props) {
                 onChange={handleDateChange}
                 calendar={persian}
                 locale={persian_fa}
+                style={{height:50,width:200,textAlign:'center',fontSize:17}}
+                minDate={moment().toDate()}
             />
 
 

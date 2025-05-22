@@ -11,10 +11,11 @@ import {
   styled,
   useTheme,
 } from '@mui/material';
+import UserContext from './../../UserContext';
 import axios from 'axios';
 import React, {useRef} from 'react';
 import toast, {Toaster} from 'react-hot-toast';
-import {Link, useLocation} from 'react-router-dom';
+import {Link, Navigate, useLocation, useNavigate} from 'react-router-dom';
 import googleIcon from '../../assets/googleIcon.svg';
 import helpIcon from '../../assets/helpIcon.svg';
 import {useScreen} from '../../customHooks/useScreen';
@@ -81,7 +82,10 @@ const LinkContainer = styled(Link)`
 export default function Navbar() {
   const currentScreen = useScreen();
   const theme = useTheme();
+  const navigate = useNavigate();
   const {isAuth, user, setIsAuth, setUser} = useAuthStore();
+  const { userData, setUserData } = React.useContext(UserContext);
+  
   const location = useLocation();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -100,18 +104,42 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/auth/logout`,
-        {
-          withCredentials: true,
-        }
-      );
+      // const response = await axios.get(
+      //   `${import.meta.env.VITE_SERVER_URL}/auth/logout`,
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
 
-      if (response.status === 200) {
-        setIsAuth(false);
-        setUser(null);
-        window.location.replace('/');
-      }
+      // if (response.status === 200) {
+      //   setIsAuth(false);
+      //   setUser(null);
+      //   window.location.replace('/');
+      // }
+
+      setUserData([{
+        UserId: '',
+        Username: '',
+        CurrentDate: '',
+        StartPlace: '',
+        EndPlace: '',
+        StartPlaceCode: '',
+        EndPlaceCode: '',
+        isLoading: true,
+        Mobile: '',
+        // Token: '',
+        RequestNumber: '',
+        Name: ''
+    }]);
+  
+      // Clear user data from local storage
+      localStorage.removeItem('storageData');
+      localStorage.removeItem('UserId');
+      localStorage.removeItem('Username');
+       localStorage.removeItem('Token');
+  
+      // Redirect to the login page
+      window.location.replace('/');
     } catch (error) {
       toast.error('Logout failed. Please try again', {
         position: 'top-center',
@@ -124,7 +152,7 @@ export default function Navbar() {
   const profile_container = useRef<HTMLDivElement | null>(null);
 
   return (
-    <NavContainer>
+    <NavContainer style={{backgroundColor:'rgba(1, 166, 147,0.2)',borderRadius:5,borderWidth:0.5,borderColor:'gray',padding:5}}>
       {location.pathname.startsWith('/admin') && user?.role === 'admin' ? (
         <Stack>
           <Typography
@@ -168,12 +196,29 @@ export default function Navbar() {
           gap: '1.5rem',
         }}
       >
-        <HelpButton display={{xs: 'none', md: 'flex'}}>
+          <HelpButton display={{xs: 'none', md: 'flex'}} onClick={()=>{
+            navigate('/')
+          }}>
+        
+          <Typography variant="h6" color={'black'}>
+            Home
+          </Typography>
+        </HelpButton>
+
+              <HelpButton display={{xs: 'none', md: 'flex'}} onClick={()=>{
+            navigate('/about')
+          }}>
+        
+          <Typography variant="h6" color={'black'}>
+            About Us
+          </Typography>
+        </HelpButton>
+        {/* <HelpButton display={{xs: 'none', md: 'flex'}}>
           <img src={helpIcon} alt="help" />
           <Typography variant="h6" color={theme.palette.common.black}>
             Help
           </Typography>
-        </HelpButton>
+        </HelpButton> */}
 
         {isAuth ? (
           <GoogleButton variant="outlined" href={getGoogleOAuthURL()}>
@@ -238,10 +283,15 @@ export default function Navbar() {
               }}
             >
               <MenuItem>
-                <LinkContainer to="/profile">View Profile</LinkContainer>
+                <LinkContainer to="/profile">Profile</LinkContainer>
               </MenuItem>
               <MenuItem onClick={handleLogout}>
+              { userData[0].Token &&
                 <LinkContainer to="#">Logout</LinkContainer>
+                // :
+                // <LinkContainer to="/bus-schedule">Login</LinkContainer>
+
+              }
               </MenuItem>
             </Menu>
           </ProfileContainer>

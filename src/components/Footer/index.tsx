@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import {Link} from 'react-router-dom';
 import Logo from '../../assets/iiitdmj-logo.png';
+import frame from '../../assets/frame.png';
 
 const LinkContainer = styled(Link)(() => ({
   textDecoration: 'none',
@@ -97,6 +98,15 @@ export default function Footer() {
                 <LinkContainer to="/contactus" sx={{padding: 0}}>
                   Contact Us
                 </LinkContainer>
+              </List>
+            </Grid>
+
+               <Grid item xs={4} sx={{paddingLeft: 0}}>
+              <Typography sx={{textDecoration: 'underline'}} variant="h6">
+               
+              </Typography>
+              <List sx={{padding: 0}}>
+                  <img src={frame} alt="College-logo" width={138} />
               </List>
             </Grid>
           </Grid>

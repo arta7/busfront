@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Typography, Box, Link} from '@mui/material';
+import {Container, Typography, Box} from '@mui/material';
 import TermsAndPolicy_1 from '../../assets/termsAndPolicy_1.avif';
 import TermsAndPolicy_2 from '../../assets/termsAndPolicy_2.avif';
 import TermsAndPolicy_3 from '../../assets/termsAndPolicy_3.jpg';
@@ -84,7 +84,7 @@ const RefundPolicy = () => {
             </Typography>
             <Typography variant="body2" paragraph>
               To request a refund, please contact our customer support team at
-              support@busify.com. Include your order number and the reason for
+              .Include your order number and the reason for
               your refund request.
             </Typography>
             <Typography variant="body2" paragraph>
@@ -121,7 +121,7 @@ const RefundPolicy = () => {
               Our customer support team is available to assist you with any
               questions or concerns regarding our products and services. For
               inquiries related to your purchase or our refund policy, please
-              email us at support@busify.com.
+              email us 
             </Typography>
             <Typography variant="body2" paragraph>
               We strive to provide timely and helpful support to ensure your

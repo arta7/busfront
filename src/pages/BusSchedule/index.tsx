@@ -9,33 +9,34 @@ import { BusSearch } from '../../Api/ApiMaster';
 import UserContext from './../../UserContext';
 import moment from 'moment-jalaali';
 
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 
 
-
-let jalaliWeekdayNumber = (dayname)=>{
+let jalaliWeekdayNumber = (dayname) => {
   switch (dayname) {
     case 'Saturday':
       return 'شنبه';
       break;
-      case 'Sunday':
-        return 'یک شنبه';
-        break;
-        case 'Monday':
-          return 'دوشنبه';
-          break;
-          case 'Tuesday':
-            return 'سه شنبه';
-            break;
-            case 'Wednesday':
-              return 'چهارشنبه';
-              break;
-              case 'Thursday':
-                return 'پنج شنبه';
-                break;
-                case 'Friday':
-                  return 'جمعه';
-                  break;
-  
+    case 'Sunday':
+      return 'یک شنبه';
+      break;
+    case 'Monday':
+      return 'دوشنبه';
+      break;
+    case 'Tuesday':
+      return 'سه شنبه';
+      break;
+    case 'Wednesday':
+      return 'چهارشنبه';
+      break;
+    case 'Thursday':
+      return 'پنج شنبه';
+      break;
+    case 'Friday':
+      return 'جمعه';
+      break;
+
     default:
       break;
   }
@@ -76,11 +77,11 @@ const BusSchedule = (props) => {
   return (
     <>
       <Grid
-       container direction="column" alignItems="center"
+        container direction="column" alignItems="center"
       >
-        
+
         <Grid
-          
+
           justifyContent="space-between"
           alignItems="center"
           width={'40%'}
@@ -88,99 +89,101 @@ const BusSchedule = (props) => {
           sx={{
             // border: '1px solid rgba(0, 0, 0, 0.2)',
             // boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
-            borderRadius: '8px',
+            borderRadius: 2,
             marginTop: '2.5rem',
-            
+
             // padding: currentScreen === 'xs' ? '1rem' : '1.5rem 3rem',
           }}
           height={60}
         >
-         
-                  <div style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'space-between', alignItems: 'center', height: '100%', borderTopColor: 'gray', borderTopWidth: 0.5
-          ,  display: 'flex',
-        }} >
 
-          <button className="dayButton" onClick={() => {
+          <div style={{
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between', alignItems: 'center', height: '100%', borderTopColor: 'gray', borderTopWidth: 0.5
+            , display: 'flex',
+          }} >
 
-
-            var today = new Date(userData[0].CurrentDate);
-            var tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() - 1);
-            const myNextList = [...userData];
-            const DatesStep = myNextList;
-            DatesStep[0].CurrentDate = tomorrow;
-            setUserData(myNextList)
-            setLoading(true)
-            setData([])
-            BusSearch(userData[0].StartPlaceCode, userData[0].EndPlaceCode, moment(new Date(tomorrow)).format('jYYYY/jMM/jDD'), userData[0].Token,
-              setLoading, setData, setUserData, userData, props)
-
-          }} style={{
-            width: '33%', height: '100%', justifyContent: 'center', alignItems: 'center'
-            , borderWidth: 1, paddingTop: 5, borderColor: 'gray', flexDirection: 'column',backgroundColor:'#e6f2ff'
-            ,borderTopLeftRadius:'8px',borderBottomLeftRadius:'8px',borderRightWidth:1,display:'flex'
-          }}>
-           
-            <span className="dayButtonText">
-            {moment(new Date(userData[0].CurrentDate.toString())).add(-1, 'day').format('jYYYY/jMM/jDD')}
-            </span>
-            <span className="dayButtonText">
-            {jalaliWeekdayNumber(moment(new Date(userData[0].CurrentDate.toString())).add(-1, 'day').format('dddd'))}
-            </span>
-          </button>
-
-          <button 
-          style={{
-            width: '34%', height: '100%', justifyContent: 'center',borderColor:'gray'
-            , alignItems: 'center', display: 'flex',backgroundColor:'#e6f2ff'
-            ,borderBottomWidth:3,borderBottomColor:'green',flexDirection:'column'
-          }}
-          
-          
-          >
-            <span >
-              {moment(new Date(userData[0].CurrentDate.toString())).format('jYYYY/jMM/jDD')}
-            </span>
-            <span className="dayButtonText">
-            {jalaliWeekdayNumber(moment(new Date(userData[0].CurrentDate.toString())).format('dddd'))}
-            </span>
-          </button>
-
-          <button className="dayButton" onClick={() => {
-            var today = new Date(userData[0].CurrentDate);
-            var tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-         
-            const myNextList = [...userData];
-            const DatesStep = myNextList;
-            DatesStep[0].CurrentDate = tomorrow;
-            setUserData(myNextList)
-            setLoading(true)
-            setData([])
-            BusSearch(userData[0].StartPlaceCode, userData[0].EndPlaceCode, moment(new Date(tomorrow)).format('jYYYY/jMM/jDD'), userData[0].Token, setLoading, setData, setUserData, userData, props)
+            <button className="dayButton" disabled={(new Date(userData[0].CurrentDate.toString())) < (new Date())} onClick={() => {
 
 
-          }} style={{
-            width: '33%', height: '100%', justifyContent: 'center', alignItems: 'center'
-            , borderWidth: 1, paddingTop: 5, borderColor: 'gray', flexDirection: 'column',backgroundColor:'#e6f2ff',
-            borderTopRightRadius:'8px',borderBottomRightRadius:'8px',borderLeftWidth:1,display:'flex'
-          }}>
-            <span className="dayButtonText">
-            {moment(new Date(userData[0].CurrentDate.toString())).add(1, 'day').format('jYYYY/jMM/jDD')}
-            </span>
-            <span className="dayButtonText">
-            {jalaliWeekdayNumber(moment(new Date(userData[0].CurrentDate.toString())).add(1, 'day').format('dddd'))}
-            </span>
-            
-          </button>
-        </div>
+              var today = new Date(userData[0].CurrentDate);
+              var tomorrow = new Date(today);
+              tomorrow.setDate(today.getDate() - 1);
+              const myNextList = [...userData];
+              const DatesStep = myNextList;
+              DatesStep[0].CurrentDate = tomorrow;
+              setUserData(myNextList)
+              setLoading(true)
+              setData([])
+              BusSearch(userData[0].StartPlaceCode, userData[0].EndPlaceCode, moment(new Date(tomorrow)).format('jYYYY/jMM/jDD'), userData[0].Token,
+                setLoading, setData, setUserData, userData, props)
+
+            }} style={{
+              width: '33%', height: '100%', justifyContent: 'center', alignItems: 'center'
+              , borderWidth: 1, paddingTop: 5, borderColor: 'gray', flexDirection: 'column', backgroundColor: 'rgb(1,166,147,1)'
+              , borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px', borderRightWidth: 1, display: 'flex'
+            }}>
+
+              <span className="dayButtonText">
+                {moment(new Date(userData[0].CurrentDate.toString())).add(-1, 'day').format('jYYYY/jMM/jDD')}
+              </span>
+              <span className="dayButtonText">
+                {jalaliWeekdayNumber(moment(new Date(userData[0].CurrentDate.toString())).add(-1, 'day').format('dddd'))}
+              </span>
+            </button>
+
+            <button
+              style={{
+                width: '34%', height: '100%', justifyContent: 'center', borderColor: 'gray'
+                , alignItems: 'center', display: 'flex', backgroundColor: 'rgb(1,166,147,1)'
+                , borderBottomWidth: 3, borderBottomColor: 'green', flexDirection: 'column'
+              }}
+
+
+            >
+              <span >
+                {moment(new Date(userData[0].CurrentDate.toString())).format('jYYYY/jMM/jDD')}
+              </span>
+              <span className="dayButtonText">
+                {jalaliWeekdayNumber(moment(new Date(userData[0].CurrentDate.toString())).format('dddd'))}
+              </span>
+            </button>
+
+            <button className="dayButton" onClick={() => {
+              var today = new Date(userData[0].CurrentDate);
+              var tomorrow = new Date(today);
+              tomorrow.setDate(today.getDate() + 1);
+
+              const myNextList = [...userData];
+              const DatesStep = myNextList;
+              DatesStep[0].CurrentDate = tomorrow;
+              setUserData(myNextList)
+              setLoading(true)
+              setData([])
+              BusSearch(userData[0].StartPlaceCode, userData[0].EndPlaceCode, moment(new Date(tomorrow)).format('jYYYY/jMM/jDD'), userData[0].Token, setLoading, setData, setUserData, userData, props)
+
+
+            }} style={{
+              width: '33%', height: '100%', justifyContent: 'center', alignItems: 'center'
+              , borderWidth: 1, paddingTop: 5, borderColor: 'gray', flexDirection: 'column', backgroundColor: 'rgb(1,166,147,1)',
+              borderTopRightRadius: '8px', borderBottomRightRadius: '8px', borderLeftWidth: 1, display: 'flex'
+            }}>
+              <span className="dayButtonText">
+                {moment(new Date(userData[0].CurrentDate.toString())).add(1, 'day').format('jYYYY/jMM/jDD')}
+              </span>
+              <span className="dayButtonText">
+                {jalaliWeekdayNumber(moment(new Date(userData[0].CurrentDate.toString())).add(1, 'day').format('dddd'))}
+              </span>
+
+            </button>
+          </div>
         </Grid>
         <Grid container direction="column" marginTop="2rem">
           <Grid item>
-            {Data?.searchItems?.map((sche, index) => {
+
+            {
+            !Loading ? Data?.searchItems?.map((sche, index) => {
               // if (sche.days.includes(selectedDay)) 
               //   {
               return (
@@ -197,7 +200,7 @@ const BusSchedule = (props) => {
                   originCity={sche.originCity}
                   destinationCity={sche.destinationCity}
                   originTerminal={sche.originTerminal}
-                  destinationTerminal={sche.destinationTerminal != '' ? sche.destinationTerminal  : sche.destinationCity}
+                  destinationTerminal={sche.destinationTerminal != '' ? sche.destinationTerminal : sche.destinationCity}
                   carType={sche.carType}
                   companyName={sche.companyName}
                   moveDateTime={sche.moveDateTime}
@@ -208,7 +211,25 @@ const BusSchedule = (props) => {
                 />
               );
 
-            })}
+            })
+              :
+        
+               <Stack spacing={1} style={{justifyContent:'center',alignItems:'center'}}>
+      {/* For variant="text", adjust the height via font-size */}
+    
+
+      {/* For other variants, adjust the size with `width` and `height` */}
+      
+      <Skeleton variant="rectangular" width={'80%'} height={200} />
+
+         <Skeleton variant="rectangular" width={'80%'} height={200} />
+
+            <Skeleton variant="rectangular" width={'80%'} height={200} />
+      {/* <Skeleton variant="rounded" width={210} height={60} /> */}
+    </Stack>
+           
+            }
+
           </Grid>
         </Grid>
 

@@ -3,10 +3,12 @@ import './animation.css';
 import {useTheme, Typography, styled, Box, Button} from '@mui/material';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import {useState} from 'react';
+import {useState,useContext} from 'react';
 import {useAuthStore} from '../../store/authStore';
 import SchedulesByPassengerEmailClose from '../../components/TicketCardClose';
 import SchedulesByPassengerEmail from '../../components/TicketCard';
+import UserContext from './../..//UserContext';
+
 
 const ContainerMain = styled(Box)`
   width: 100%;
@@ -104,6 +106,7 @@ const FilterButton = styled(Button)`
 const ProfilePage = () => {
   const theme = useTheme();
   const [currentTab, setCurrentTab] = useState<1 | 2>(1);
+   const { userData, setUserData } = useContext(UserContext);
   const {user} = useAuthStore();
   const [filter, setFilter] = useState<string>('all');
   const handleFilterChange = (selectedFilter: string) => {
@@ -140,28 +143,28 @@ const ProfilePage = () => {
           Profile Details
         </Typography>
         <Box>
-          <Typography variant="caption" color="#c6c6c6" marginBottom="0">
-            name
+          <Typography variant="h4" color="#c6c6c6" marginBottom="0" fontWeight={500}>
+            Name : 
           </Typography>
           <Typography variant="h5" marginBottom="1rem" fontWeight={500}>
-            {user?.name ?? 'No username...'}
+            {userData[0].Name ?? 'No Name ...'}
           </Typography>
-          <Typography variant="caption" color="#c6c6c6" marginBottom="0">
-            email
+          <Typography variant="h4" color="#c6c6c6" marginBottom="0" fontWeight={500}>
+            Mobile : 
           </Typography>
           <Typography variant="h5" marginBottom="1rem" fontWeight={500}>
-            {user?.email ?? 'No email id!!'}
+            {userData[0].Mobile ?? 'No Mobile No!!'}
           </Typography>
         </Box>
-        <Typography
+        {/* <Typography
           variant="body2"
           color={theme.palette.secondary.light}
           fontWeight={600}
         >
           Member Since, May 2022
-        </Typography>
+        </Typography> */}
       </ProfileSection>
-      <EventBox>
+      {/* <EventBox>
         <Box
           display="flex"
           justifyContent="start"
@@ -187,8 +190,8 @@ const ProfilePage = () => {
             style={{cursor: 'pointer'}}
           >
             Upcoming
-          </Typography>
-          <Typography
+          </Typography> 
+           <Typography
             variant="h4"
             fontWeight={600}
             color={currentTab === 2 ? theme.palette.primary.main : '#000'}
@@ -270,7 +273,7 @@ const ProfilePage = () => {
             </Box>
           )}
         </Box>
-      </EventBox>
+      </EventBox> */}
     </ContainerMain>
   );
 };

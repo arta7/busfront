@@ -8,7 +8,10 @@ import {
   Box,
   TextField,
   IconButton,
+  CircularProgress
 } from '@mui/material';
+
+import ReactInputMask from 'react-input-mask';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
@@ -25,7 +28,7 @@ import company from '../../assets/company.svg';
 import BusSeats from './BusSeats';
 import UserContext from './../../UserContext';
 import { BusDetailss, busPreReserves } from '../../Api/ApiMaster';
-import { Height } from '@mui/icons-material';
+import { Height, Padding } from '@mui/icons-material';
 import FlatList from 'flatlist-react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -41,7 +44,7 @@ const Details = styled(Box)`
  
   gap: 2rem;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
+  border-radius: 3px;
   margin: 2rem 0;
   padding: 1.5rem;
 `;
@@ -61,7 +64,7 @@ const PassengersContainer = styled(Box)`
   flex-direction: column;
   gap: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
+  border-radius: 3px;
   margin: 2rem 0;
   padding: 1rem;
   min-height: 20vh;
@@ -133,43 +136,29 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
 
 
 
+
+
+
+  const itemSchema = yup.object().shape({
+    name: yup.string().required('نام الزامی است').min(4, 'حداقل ۴ حرف باید باشد'),
+    family: yup.string().required('نام خانوادگی الزامی است').min(4, 'حداقل ۴ حرف باید باشد'),
+    mobile: yup.string().required('شماره موبایل الزامی است').min(11, 'شماره موبایل باید با 11 رقم باشد '),
+    date: yup.string().required('تاریخ تولد الزامی است'),
+    code: yup.string().required('کد ملی الزامی است').min(10, 'کد ملی باید ۱۰ عدد  باشد')
+  });
+
   const schema = yup.object().shape({
-   
-
-    items: yup.array().of(
-      yup.object().shape({
-        name: yup
-          .string()
-          .required('نام را وارد کنید'),
-        family: yup
-          .string()
-          .required('نام خانوادگی را وارد کنید'),
-        mobile: yup
-          .string().min(11, 'شماره موبایل باید 11 عدد باشد')
-          .required('شماره موبایل را وارد کنید'),
-        code: yup
-          .string().min(10, 'کد ملی باید 10 کاراکتر باشد')
-          .required('کد ملی را وارد کنید')
-
-      })
-    )
-  })
+    items: yup.array().of(itemSchema).required('حداقل یک مسافر باید تعریف شود')
+  });
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
-
-    initialValues: {
-      // Initial values for the array
-      items: BusPerson
-      //   name: '', family: '', mobile: '', birthDate: '', codemelli: ''
-      // ... other initial items
-
-    }
-
+    defaultValues: { items: BusPerson },
   });
 
   const onPressSend = () => {
 
+    console.log('test')
     {
       var passengers = []
       for (let i = 0; i < BusPerson.length; i++) {
@@ -252,444 +241,228 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
 
 
   useEffect(() => {
-    // console.log('request number',requestNumber)
-    // console.log('data',data.sourceCode)
-    // if(isDrawerOpen)
     {
-       console.log('requestNumber', data)
+      console.log('requestNumber', data)
       BusDetailss(requestNumber, data?.sourceCode, data?.busCode,
         userData[0].Token, setLoading, setData, props, setReturnData)
     }
   }, [])
 
 
+
+
   const renderPerson = (item, index) => {
-    const itemErrors =   errors.items?.[index];
-    // const { errors } = control;
-    // console.log('item',item)
+    const itemErrors = errors.items?.[index];
+
     return (
       <div key={index} style={{
-        width: '100%', height: 'auto', padding: 10,
-        backgroundColor: 'rgba(190,240,250,0.5)', borderRadius: 10, borderWidth: 0.5, marginBottom: '3%'
-      }}
-      >
-        <div>
-          <Typography style={{
-            color: 'black', fontSize: '12'
-            // , fontFamily: Fonts.Poppins_Italic 
-          }}>مسافر صندلی  {item.chairNumber} :  </Typography>
-        </div>
-        
-        <div style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, alignItems: 'center',display:'flex' }}>
-          <div style={{
-            width: '40%', height: 70, color: 'black',
-            marginRight: '2%',
-          }}>
+        direction: 'ltr',
+        width: '100%', padding: 10,
+        backgroundColor: 'rgba(1,166,147,0.1)', borderRadius: 2, marginBottom: '1%'
+      }}>
+        <Typography style={{ color: 'black', fontSize: '12px' }}>
+          Passenger {item.chairNumber}:
+        </Typography>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ flex: 1, marginRight: '5px', marginLeft: '10px', marginBottom: '10px' }}>
             <Controller
               control={control}
-              rules={{
-                required: true,
-              }}
-
+              rules={{ required: true }}
               name={`items.${index}.name`}
-              // name={`items.${index}.name`}
-
-              //   error={error}
               render={({ field: { onChange, value } }) => (
-                <>
-                  <TextField
-                    style={{
-                      height: 50, borderRadius: 10, textAlign: 'right',width:'98%'
-                      //    , fontFamily: Fonts.Poppins_Italic 
-                    }}
-                    onChange={(text) => {
-
-                      const myNextList = [...BusPerson];
-                      const DatesStep = myNextList;
-                      console.log('DatesStep', DatesStep)
-                      const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber)
-                      seatToUpdate[0].name = text.target.value;
-                      setBusPerson(myNextList)
-                     
-                      onChange(text)
-                    }}
-                    value={value}
-                    // onChangeText={onChange}
-                    // mode='outlined'
-                    label={'نام '}
-                  // placeholderTextColor={'black'}
-                  />
+                <TextField
+                  style={{ height: 50, borderRadius: 2, width: '100%' }}
+                  onChange={(text) => {
 
 
-                </>
+                    const myNextList = [...BusPerson];
+                    const DatesStep = myNextList;
+                    console.log('DatesStep', DatesStep)
+                    const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber)
+                    seatToUpdate[0].name = text.target.value;
+                    setBusPerson(myNextList)
+                    console.log('BusPerson', BusPerson)
+                    onChange(text.target.value)
+                  }}
+                  value={item.name}
+                  label="Name"
+                  
 
+
+                />
               )}
-
-
             />
-            {itemErrors?.name && <Typography style={{ color: 'red' }}>* {itemErrors.name.message}</Typography>}
+            {itemErrors?.name && <Typography style={{ color: 'red' }}>* {itemErrors?.name.message}</Typography>}
           </div>
-          <div style={{
-            width: '55%', height: 70, color: 'black',
-          }}>
+
+          <div style={{ flex: 1, marginRight: '5px', marginLeft: '10px', marginBottom: '10px' }}>
             <Controller
               control={control}
-              rules={{
-                required: true,
-              }}
+              rules={{ required: true }}
               name={`items.${index}.family`}
               render={({ field: { onChange, value } }) => (
-
                 <TextField
-                  style={{ height: 50, color: 'black', borderRadius: 10, textAlign: 'right',width:'98%'}}
+                  style={{ height: 50, borderRadius: 2, width: '100%' }}
+                  onChange={(text) => {
+                    const myNextList = [...BusPerson];
+                    const DatesStep = myNextList;
+                    console.log('DatesStep', DatesStep)
+                    const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber);
+                    seatToUpdate[0].family = text.target.value;
+                    setBusPerson(myNextList)
+                    console.log('BusPerson', BusPerson)
+                    onChange(text.target.value)
+
+                  }}
+                  value={item.family}
+                  label="Family"
+                />
+              )}
+            />
+            {itemErrors?.family && <Typography style={{ color: 'red' }}>* {itemErrors.family.message}</Typography>}
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
+          <div style={{ flex: 1, marginRight: '5px', marginLeft: '10px', marginBottom: '10px' }}>
+            <Controller
+              control={control}
+              rules={{ required: true }}
+              name={`items.${index}.mobile`}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  style={{ height: 50, borderRadius: 2, width: '100%' }}
                   onChange={(text) => {
                     const myNextList = [...BusPerson];
                     const DatesStep = myNextList;
                     console.log('DatesStep', DatesStep)
                     const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber)
-                    seatToUpdate[0].family = text.target.value;
+                    seatToUpdate[0].mobile = text.target.value;
                     setBusPerson(myNextList)
                     console.log('BusPerson', BusPerson)
-                    onChange(text)
-
+                    onChange(text.target.value)
                   }}
-                  value={item.family}
-                  // mode='outlined'
-                  label={'نام خانوادگی '}
-                // placeholderTextColor={'black'}
+                  value={item.mobile}
+                  label="Mobile No"
                 />
-
               )}
-
             />
-
-            {itemErrors?.family && <Typography style={{
-              color: 'red'
-              //, fontFamily: Fonts.Poppins_Italic 
-            }}>* {itemErrors.family.message}</Typography>}
+            {itemErrors?.mobile && <Typography style={{ color: 'red' }}>* {itemErrors.mobile.message}</Typography>}
           </div>
 
-
-        </div>
-
-
-
-        <div style={{ padding: 5, justifyContent: 'center', alignItems: 'center' ,flexDirection:'row',display:'flex'}}>
-
-        <div style={{
-            width: '40%', height: 70, color: 'black',
-            marginRight: '2%',
-          }}>
-
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => (
-              <TextField
-                style={{ width: '98%', height: 50, color: 'black', borderRadius: 10, textAlign: 'right'}}
-                onChange={(text) => {
-                  const myNextList = [...BusPerson];
-                  const DatesStep = myNextList;
-                  console.log('DatesStep', DatesStep)
-                  const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber)
-                  seatToUpdate[0].mobile = text.target.value;
-                  setBusPerson(myNextList)
-                  
-                  onChange(text)
-                }}
-                // mode='outlined'
-                value={item.mobile}
-                label={'شماره موبایل'}
-                // placeholderTextColor={'black'}
-                 type='number'
-              />
-            )}
-            name={`items.${index}.mobile`}
-          />
-
-
-          {itemErrors?.mobile && (<Typography style={{
-            color: 'red', textAlign: 'right'
-            // , fontFamily: Fonts.Poppins_Italic 
-          }}>* {itemErrors?.mobile.message}</Typography>)}
-
-</div>
-
-<div style={{
-          width: '55%', height: 70, color: 'black',
-          marginRight: '2%'
-          }}>
-
-<Controller
-  control={control}
-  rules={{
-    required: true,
-  }}
-  render={({ field: { onChange, value } }) => (
-    <Button style={{ padding: 5, justifyContent: 'center', alignItems: 'center',width: '98%', }}
-      onClick={() => { setDatePickerVisibility({ status: true, id: item.chairNumber }) }}>
-      <TextField
-        style={{  height: 50, color: 'black', borderRadius: 10, textAlign: 'center' }}
-        onChange={(text) => {
-
-          onChange(text)
-        }}
-        value={item.date}
-        disabled={false}
-        label={'تاریخ تولد'}
-      // mode='outlined'
-      // placeholderTextColor={'black'}
-      />
-    </Button>
-  )}
-
-  name={`items.${index}.date`}
-/>
-{
-  itemErrors?.date && (
-    <Typography style={{
-      color: 'red', textAlign: 'right'
-      // , fontFamily: Fonts.Poppins_Italic
-    }}>* {itemErrors.date.message}</Typography>
-  )
-}
-
-</div>
-
-        </div>
-        <div style={{ flexDirection: 'row', justifyContent: 'space-between',
-          padding: 5, alignItems: 'center' ,display:'flex'}}>
-
- 
-
-          <div style={{ width: '55%', height: 50, marginRight: '2%', }}>
-            <Controller
+          <div style={{ flex: 1, marginRight: '5px', marginLeft: '10px', marginBottom: '10px' }}>
+            {/* <Controller
               control={control}
-              rules={{
-                required: true,
-              }}
-
+              rules={{ required: true }}
+              name={`items.${index}.date`}
               render={({ field: { onChange, value } }) => (
                 <TextField
-                  style={{ height: 50, color: 'black', borderRadius: 10, textAlign: 'right',width:'98%' }}
+                  style={{ height: 50, borderRadius: 2, width: '100%' }}
+                  onChange={onChange}
+                  value={value}
+                  label="Birthday"
+                  
+                />
+              )}
+            /> */}
+            <Controller
+              control={control}
+              rules={{ required: true }}
+              name={`items.${index}.date`}
+              render={({ field: { onChange, value } }) => (
+                <ReactInputMask
+                  mask="9999/99/99" // Define the mask (YYYY/MM/DD)
+                  value={value || ''} // Ensure value is a string or empty
+                  onChange={(event) => {
+                    const { value } = event.target;
+                    const myNextList = [...BusPerson];
+                    const seatToUpdate = myNextList.filter(a => a.chairNumber === item.chairNumber);
+
+                    // Update the birthday in the BusPerson state
+                    if (seatToUpdate.length > 0) {
+                      seatToUpdate[0].date = value;  // Update specific seat's birthDate
+                    }
+
+                    setBusPerson(myNextList); // Update segment state
+                    onChange(value); // Trigger the onChange from react-hook-form
+                  }}
+                  style={{ height: 50, borderRadius: 2, width: '100%' }}
+                  maskChar="_" // Optional: Character to show for unfilled positions
+                >
+                  {(inputProps) => (
+                    <TextField
+                      {...inputProps} // Pass the inputProps from ReactInputMask to TextField
+                      label="Birthday"
+                      error={!!errors.items?.[index]?.date} // Show error if exists
+                      helperText={errors.items?.[index]?.date ? errors.items[index].date.message : ''} // Error message
+                    />
+                  )}
+                </ReactInputMask>
+              )}
+            />
+
+
+            {itemErrors?.date && <Typography style={{ color: 'red' }}>* {itemErrors.date.message}</Typography>}
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
+          <div style={{ flex: 1, marginRight: '5px', marginLeft: '10px', marginBottom: '10px' }}>
+            <Controller
+              control={control}
+              rules={{ required: true }}
+              name={`items.${index}.code`}
+              render={({ field: { onChange, value } }) => (
+                <TextField
+                  style={{ height: 50, borderRadius: 2, width: '100%' }}
                   onChange={(text) => {
                     const myNextList = [...BusPerson];
                     const DatesStep = myNextList;
                     const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber)
                     seatToUpdate[0].code = text.target.value;
                     setBusPerson(myNextList)
-                    onChange(text)
+                    onChange(text.target.value)
                   }}
                   value={item.code}
-                  // mode='outlined'
-                  label={'کد ملی'}
-                  // placeholderTextColor={'black'}
-                  type='number'
-                // ={10}
+                  label="NationalCode"
                 />
               )}
-
-              name={`items.${index}.code`}
             />
-
-            {
-              itemErrors?.code && (
-                <div style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-                  <Typography style={{
-                    color: 'red', textAlign: 'right'
-                    // , fontFamily: Fonts.Poppins_Italic  
-                  }}>* {itemErrors.code.message}</Typography>
-                </div>
-              )
-            }
-
+            {itemErrors?.code && <Typography style={{ color: 'red' }}>* {itemErrors.code.message}</Typography>}
           </div>
 
-          <div style={{ width: '30%', height: 50, borderWidth: 1, borderColor: 'gray', borderRadius: 10 }}>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={item.gender}
-              style={{width:'98%',color:'black'}}
-              label="جنسیت"
-              
-              onChange={(itemValue, itemIndex) => {
-                const myNextList = [...BusPerson];
-                const DatesStep = myNextList;
-                const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber)
-                seatToUpdate[0].gender = itemValue.target.value;
-                setBusPerson(myNextList)
-              }
-              }
-            >
-
-
-              <MenuItem value="2"> آقا</MenuItem>
-              <MenuItem value="3">خانم</MenuItem>
-            </Select>
+          <div style={{ flex: 1, marginRight: '5px', marginLeft: '10px', marginBottom: '10px' }}>
+            <Controller
+              control={control}
+              rules={{ required: true }}
+              name={`items.${index}.gender`}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  value={value}
+                  onChange={(itemValue, itemIndex) => {
+                    console.log('itemValue', itemValue.target.value)
+                    const myNextList = [...BusPerson];
+                    const DatesStep = myNextList;
+                    const seatToUpdate = DatesStep.filter(a => a.chairNumber == item.chairNumber)
+                    seatToUpdate[0].gender = itemValue.target.value;
+                    setBusPerson(myNextList)
+                  }
+                  }
+                  style={{ width: '100%', height: '50px', borderRadius: 2 }}
+                  defaultValue='2'
+                  label='Gender'
+                >
+                  <MenuItem value="2">Man</MenuItem>
+                  <MenuItem value="3">Women</MenuItem>
+                </Select>
+              )}
+            />
           </div>
         </div>
-
-
-      </div >
-    )
-  }
-
-// const renderPerson = (item, index) => {
-//   const itemErrors = errors.items?.[index];
-
-//   return (
-//     <div key={index} style={{
-//       width: '100%', height: 'auto', padding: 10,
-//       backgroundColor: 'rgba(190,240,250,0.5)', borderRadius: 10, borderWidth: 0.5, marginBottom: '3%'
-//     }}
-//     >
-//       <div>
-//         <Typography style={{
-//           color: 'black', fontSize: '12'
-//         }}>مسافر صندلی  {item.chairNumber} :  </Typography>
-//       </div>
-//       <div style={{ flexDirection: 'row', justifyContent: 'center', padding: 5, alignItems: 'center', display: 'flex' }}>
-//         <div style={{
-//           width: '40%', height: 70, color: 'black',
-//           marginRight: '2%',
-//         }}>
-//           <Controller
-//             control={control}
-//             rules={{
-//               required: true,
-//             }}
-//             name={`items.${index}.name`}
-//             render={({ field: { onChange, value } }) => (
-//               <TextField
-//                 style={{
-//                   height: 50, borderRadius: 10, textAlign: 'right'
-//                 }}
-//                 onChange={(e) => onChange(e.target.value)}
-//                 value={value}
-//                 label={'نام '}
-//               />
-//             )}
-//           />
-//           {itemErrors?.name && <Typography style={{ color: 'red' }}>* {itemErrors.name.message}</Typography>}
-//         </div>
-//         <div style={{
-//           width: '55%', height: 70, color: 'black',
-//         }}>
-//           <Controller
-//             control={control}
-//             rules={{
-//               required: true,
-//             }}
-//             name={`items.${index}.family`}
-//             render={({ field: { onChange, value } }) => (
-//               <TextField
-//                 style={{ height: 50, color: 'black', borderRadius: 10, textAlign: 'right' }}
-//                 onChange={(e) => onChange(e.target.value)}
-//                 value={value}
-//                 label={'نام خانوادگی '}
-//               />
-//             )}
-//           />
-//           {itemErrors?.family && <Typography style={{ color: 'red' }}>* {itemErrors.family.message}</Typography>}
-//         </div>
-//       </div>
-
-//       <div style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}>
-//         <Controller
-//           control={control}
-//           rules={{
-//             required: true,
-//           }}
-//           name={`items.${index}.mobile`}
-//           render={({ field: { onChange, value } }) => (
-//             <TextField
-//               style={{ width: '97%', height: 50, color: 'black', borderRadius: 10, textAlign: 'right' }}
-//               onChange={(e) => onChange(e.target.value)}
-//               value={value}
-//               label={'شماره موبایل'}
-//               maxLength={11}
-//             />
-//           )}
-//         />
-//         {itemErrors?.mobile && (<Typography style={{ color: 'red', textAlign: 'right' }}>* {itemErrors?.mobile.message}</Typography>)}
-//       </div>
-
-//       <div style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 5, alignItems: 'center', display: 'flex' }}>
-//         <Controller
-//           control={control}
-//           rules={{
-//             required: true,
-//           }}
-//           name={`items.${index}.date`}
-//           render={({ field: { onChange, value } }) => (
-//             <Button style={{ padding: 5, justifyContent: 'center', alignItems: 'center' }}
-//               onClick={() => { setDatePickerVisibility({ status: true, id: item.chairNumber }) }}>
-//               <TextField
-//                 style={{ width: '97%', height: 50, color: 'black', borderRadius: 10, textAlign: 'center' }}
-//                 onChange={(e) => onChange(e.target.value)}
-//                 value={value}
-//                 disabled={false}
-//                 label={'تاریخ تولد'}
-//               />
-//             </Button>
-//           )}
-//         />
-//         {itemErrors?.date && (
-//           <Typography style={{ color: 'red', textAlign: 'right' }}>* {itemErrors.date.message}</Typography>
-//         )}
-//         <div style={{ width: '65%', height: 70, marginRight: '2%', }}>
-//           <Controller
-//             control={control}
-//             rules={{
-//               required: true,
-//             }}
-//             name={`items.${index}.code`}
-//             render={({ field: { onChange, value } }) => (
-//               <TextField
-//                 style={{ height: 50, color: 'black', borderRadius: 10, textAlign: 'right' }}
-//                 onChange={(e) => onChange(e.target.value)}
-//                 value={value}
-//                 label={'کد ملی'}
-//                 // type=''
-//               />
-//             )}
-//           />
-//           {itemErrors?.code && (
-//             <div style={{ justifyContent: 'flex-start', alignItems: 'flex-start' }}>
-//               <Typography style={{ color: 'red', textAlign: 'right' }}>* {itemErrors.code.message}</Typography>
-//             </div>
-//           )}
-//         </div>
-
-//         <div style={{ width: '30%', height: 50, borderWidth: 1, borderColor: 'gray', borderRadius: 10 }}>
-//           <Controller
-//             name={`items.${index}.gender`}
-//             control={control}
-//             rules={{
-//               required: true,
-//             }}
-//             render={({ field }) => (
-//               <Select
-//                 labelId="demo-simple-select-label"
-//                 id="demo-simple-select"
-//                 value={field.value || ''} // Ensure a default value
-//                 label="Gender"
-//                 onChange={field.onChange}
-//               >
-//                 <MenuItem value="2"> آقا</MenuItem>
-//                 <MenuItem value="3">خانم</MenuItem>
-//               </Select>
-//             )}
-//           />
-//         </div>
-//       </div>
-//     </div >
-//   )
-// }
-
+      </div>
+    );
+  };
 
 
 
@@ -711,22 +484,25 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
   return (
     <>
       <Button
-        variant="contained"
+        // variant="contained"
         disabled={disabled}
         startIcon={<ConfirmationNumberIcon />}
         onClick={bookTicketHandler}
+
         sx={{
           padding: '0.5vw 1.2vw',
+          backgroundColor: '#1c38bb',
           fontSize: { xs: '10px', sm: '12px', md: '15px' },
+          color: 'black',
           minWidth: 'max-content',
           '&:hover': {
-            backgroundColor: '#e6f2ff',
+            backgroundColor: '#1c38bb',
           },
 
         }}
 
       >
-        جزییات
+        More
       </Button>
       <Drawer
         anchor="right"
@@ -759,20 +535,15 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
             <CrossIcon sx={{ fontSize: { md: '1rem' } }} />
           </IconButton>
         </Box>
-        <Box>
-          <Typography
-            variant="h2"
-            fontSize={{ xs: '1.5rem', sm: '1.75rem', md: '2rem' }}
-            color={theme.palette.secondary.main}
-          >
-            جزییات بلیط
-          </Typography>
-          <Details sx={{ flexDirection: { xs: 'column', sm: 'row' } }} >
-            <div style={{ width: '50%', justifyContent: 'center', alignItems: 'flex-start', gap: '20px', height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <BusDetailsCard carType={carType} companyName={companyName} />
-            </div>
+        <Box sx={{ width: '100%', flexDirection: 'row', display: 'flex' }}>
 
-            <div style={{ width: '50%', justifyContent: 'center', alignItems: 'flex-start', gap: '20px', height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Details sx={{ flexDirection: 'column', width: '48%' }} >
+            <div style={{
+              width: '100%', marginLeft: '1%', marginRight: '1%', justifyContent: 'center', alignItems: 'flex-start',
+              gap: '5px', height: '100%', display: 'flex', flexDirection: 'column'
+            }}>
+              <BusDetailsCard carType={carType} companyName={companyName} />
+
               <Box
                 sx={{
                   display: 'flex',
@@ -787,10 +558,10 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
                     fontSize={{ xs: '0.8rem', sm: '0.8rem', md: '1rem' }}
                     color={theme.palette.common.black}
                   >
-                    شرکت :
+                    Company :
                   </Typography>
                   <Typography
-                    variant="h4"
+                    variant="h6"
                     fontSize={{ xs: '1rem', sm: '0.8rem', md: '1.3rem' }}
                     color={theme.palette.secondary.main}
                   >
@@ -811,13 +582,13 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
                 <Box>
                   <Typography
                     variant="h6"
-                    fontSize={{ xs: '0.8rem', sm: '0.8rem', md: '1rem' }}
+                    // fontSize={{ xs: '0.8rem', sm: '0.8rem', md: '1rem' }}
                     color={theme.palette.common.black}
                   >
-                    توضیحات :
+                    Details :
                   </Typography>
                   <Typography
-                    variant="h4"
+                    variant="h6"
                     fontSize={{ xs: '1rem', sm: '0.8rem', md: '1.3rem' }}
                     color={theme.palette.secondary.main}
                   >
@@ -827,190 +598,124 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
               </Box>
             </div>
 
+            <Box sx={{ marginTop: 7, width: '100%' }}>
+              {/* <Typography
+                variant="h2"
+                fontSize={{ xs: '1.5rem', sm: '1.75rem', md: '2rem' }}
+                color={theme.palette.secondary.main}
+              >
+                Prices       </Typography> */}
+              <FareBreakDownCard counts={BusPerson.length} price={data?.price} totalPrice={0} />
+            </Box>
+
+          </Details>
+          <Details sx={{ flexDirection: 'column', width: '48%', marginLeft: '1%', marginRight: '1%', }} >
+            <Box style={{ width: '100%', height: 'auto', Padding: 5 }}>
+
+
+              <Box sx={{
+                borderWidth: 1,
+                borderRadius: 2,
+                borderColor: 'gray',
+                backgroundColor: 'rgba(231, 231, 231, 0.5)',
+                //'ç',
+                display: 'flex',
+
+                flexDirection: 'column', // Changed to column
+                justifyContent: 'center',
+                alignItems: 'center', // Aligned items to center
+                height: '100%',
+                width: '100%',
+                //  borderWidth:1,borderColor:'black'
+              }}>
+                <div style={{
+                  borderRadius: 2,
+
+                  // borderWidth: 0.5, borderColor: 'gray' // Removed unnecessary styling
+                }}>
+                  {/* Placeholder for FlatList content, if needed */}
+                </div>
+                <div style={{
+                  borderRadius: 2,
+                  // backgroundColor: 'blue',
+                  // width: '90%', // Adjusted width
+                  margin: '5%', // Added margin for spacing
+                  // transform: 'rotate(-90deg)', // Removed rotation here
+                  display: 'flex',
+                  flexDirection: 'column', // Stack items vertically
+
+                  // alignItems: 'center', // Center content horizontally
+                }}>
+                  <Typography style={{
+                    color: 'black',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    paddingTop: '5px' // add padding for text margin
+                  }}>
+                    Bus Front
+                  </Typography>
+
+                  <BusSeats data={Data} setData={setData} BusPerson={BusPerson} setBusPerson={setBusPerson} />
+
+
+                </div>
+              </Box>
+            </Box>
+
+
+
+
+
+
+
+
+
           </Details>
 
+
+
+
         </Box>
-        {/* <Box style={{ width: '100%', height: '400px' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
 
-             
 
-            }}
-          >
-            <Typography
-              variant="h2"
-              fontSize={{ xs: '1.5rem', sm: '1.75rem', md: '2rem' }}
-              color={theme.palette.secondary.main}
+        <div style={{ width: '100%', flexDirection: 'column', display: 'flex' }}>
 
-            >
-              صندلی ها
-            </Typography>
-          </Box>
+          {BusPerson.length > 0 &&
+            <Box sx={{  }}>
+              {/* <Typography
+                variant="h2"
+                fontSize={{ xs: '1.5rem', sm: '1.75rem', md: '2rem' }}
+                color={theme.palette.secondary.main}
+              >
+                Passengers          </Typography> */}
 
-          <Box sx={{
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: 'gray',
-            backgroundColor: 'rgba(190,240,250,0.5)',
-            display: 'flex',
-            flexDirection: 'column', // Changed to column
-            justifyContent: 'space-between',
-            alignItems: 'center', // Aligned items to center
-            height: '100%',
-            width: '100%'
-          }}>
-            <div style={
-            
+            </Box>
+          }
+          {BusPerson.length > 0 &&
+            <div >
               {
-             
-              }}>
-              
-            </div>
-            <div style={{
-              borderRadius: 10,
-              backgroundColor: 'blue',
-              width: '50%', // Adjusted width
-              margin: '5%', // Added margin for spacing
-              transform: 'rotate(-90deg)', // Removed rotation here
-              display: 'flex',
-              flexDirection: 'column', // Stack items vertically
-              alignItems: 'center', // Center content horizontally
-            }}>
 
-              <Typography style={{
-                color: 'black', fontWeight: 'bold',
-                justifyContent: 'center', alignItems: 'center', alignSelf: 'center'
-         
-              }} >
-                جلوی اتوبوس
-              </Typography>
-           
+                <FlatList
+                  list={BusPerson}
 
-
-
-              {
-                <BusSeats data={Data} setData={setData} BusPerson={BusPerson} setBusPerson={setBusPerson} />
+                  renderItem={(item, index) => renderPerson(item, index)}
+                // keyExtractor={item => item.id}
+                />
               }
 
-
-
             </div>
-          </Box>
-
-        
-        </Box> */}
-        <Box style={{ width: '100%', height: '500px' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <Typography
-              variant="h2"
-              fontSize={{ xs: '1.5rem', sm: '1.75rem', md: '2rem' }}
-              color={theme.palette.secondary.main}
-            >
-              صندلی ها
-            </Typography>
-          </Box>
-
-          <Box sx={{
-            borderWidth: 1,
-            borderRadius: 10,
-            borderColor: 'gray',
-            backgroundColor: 'blue',
-            //'rgba(190,240,250,0.5)',
-            display: 'flex',
-            flexDirection: 'column', // Changed to column
-            justifyContent: 'center',
-            alignItems: 'center', // Aligned items to center
-            height: '100%',
-            width: '100%',
-            //  borderWidth:1,borderColor:'black'
-          }}>
-            <div style={{
-              borderRadius: 10,
-
-              // borderWidth: 0.5, borderColor: 'gray' // Removed unnecessary styling
-            }}>
-              {/* Placeholder for FlatList content, if needed */}
-            </div>
-            <div style={{
-              borderRadius: 10,
-              // backgroundColor: 'blue',
-              // width: '90%', // Adjusted width
-              margin: '5%', // Added margin for spacing
-              transform: 'rotate(-90deg)', // Removed rotation here
-              display: 'flex',
-              flexDirection: 'column', // Stack items vertically
-
-              // alignItems: 'center', // Center content horizontally
-            }}>
-              <Typography style={{
-                color: 'black',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                paddingTop: '5px' // add padding for text margin
-              }}>
-                جلوی اتوبوس
-              </Typography>
-              {/* <div style={{
-                width: '40%',
-                height: 2,
-                backgroundColor: 'black',
-                marginVertical: 5
-            }}></div> */}
+          }
 
 
-              {/* Removed rotation here */}
-              <BusSeats data={Data} setData={setData} BusPerson={BusPerson} setBusPerson={setBusPerson} />
 
 
-            </div>
-          </Box>
-        </Box>
 
-        {BusPerson.length > 0 &&
-          <Box sx={{ marginTop: 7 }}>
-            <Typography
-              variant="h2"
-              fontSize={{ xs: '1.5rem', sm: '1.75rem', md: '2rem' }}
-              color={theme.palette.secondary.main}
-            >
-              مسافران          </Typography>
-            
-          </Box>
-        }
-        {BusPerson.length > 0 &&
-          <div >
-            {
-
-              <FlatList
-              list={BusPerson}
-              renderItem={(item, index ) =>  renderPerson(item, index)}
-                // keyExtractor={item => item.id}
-              />
-            }
-
-          </div>
-        }
+        </div>
 
 
-        <Box sx={{ marginTop: 7 }}>
-          <Typography
-            variant="h2"
-            fontSize={{ xs: '1.5rem', sm: '1.75rem', md: '2rem' }}
-            color={theme.palette.secondary.main}
-          >
-            بهای تمام شده          </Typography>
-          <FareBreakDownCard  counts={BusPerson.length} price={data?.price} totalPrice={0} />
-        </Box>
+
+
+
         <Box
           sx={{
             display: 'flex',
@@ -1019,24 +724,34 @@ const BusDetails = ({ time, from, to, disabled, scheduleId, carType, companyName
             marginTop: '2rem',
           }}
         >
-          <Button
-            variant="contained"
-            onClick={() => {
-              onPressSend()
-              // passengerDetail.length
-              //   ? navigate('/checkout')
-              //   : notify('Please add atleast one passenger', 'warn');
-            }}
+          {Loading ? <Box
             sx={{
-              padding: '0.5rem 2rem',
-              borderRadius: '8px',
-              '&:hover': {
-                backgroundColor: theme.palette.primary.main,
-              },
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '70vh',
             }}
           >
-            پرداخت
-          </Button>
+            <CircularProgress size={200} sx={{ color: 'rgb(1,166,147,1)' }} />
+          </Box> :
+            <Button
+              // variant="contained"
+              onClick={handleSubmit(onPressSend)}
+
+              sx={{
+                padding: '0.5rem 2rem',
+                backgroundColor: 'rgba(1,166,147,1)',
+                color: 'blue',
+                borderRadius: 2,
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.main,
+                },
+              }}
+            >
+              Payment
+            </Button>
+          }
+
         </Box>
       </Drawer>
     </>
