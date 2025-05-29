@@ -1,5 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import React, { useState } from "react";
+import theme from "../../theme";
+import { useTheme } from "@emotion/react";
 
 // import { SH, SF, SW, Colors,Fonts } from "../../utils";
 export default function LikeUnlike({
@@ -17,6 +19,7 @@ export default function LikeUnlike({
 }) {
 
     const [liked, setLiked] = useState([]);
+    const theme = useTheme();
 
     return (
         <>
@@ -50,7 +53,7 @@ export default function LikeUnlike({
                 }}
                 disabled={index === 1 || index === 2 || index === 3}
             >
-                <Typography style={{ fontSize: 12,color:'black' }}>{text}</Typography>
+               <Typography variant="h8"  color={theme.palette.secondary.main}   fontFamily={theme.typography.fontFamily}>{text}</Typography>
                 <div style={ViewStyle}>
                 </div>
             </Button>

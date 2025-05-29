@@ -24,12 +24,12 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h6" color={theme.palette.secondary.main}>
+       <Typography variant="h5"  color={theme.palette.secondary.main}   fontFamily={theme.typography.fontFamily}>
         Ticket Price
         </Typography>
         <Box sx={{display: 'flex', gap: '2px'}}>
          
-          <Typography variant="h6" color={theme.palette.secondary.main}>
+        <Typography variant="h6"  color={theme.palette.secondary.main}   fontFamily={theme.typography.fontFamily}>
             {price}
           </Typography>
           <Typography>Rial </Typography>
@@ -42,11 +42,11 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h6" color={theme.palette.secondary.main}>
+       <Typography variant="h5"  color={theme.palette.secondary.main}   fontFamily={theme.typography.fontFamily}>
        Ticket Counts
         </Typography>
         <Box sx={{display: 'flex', gap: '2px'}}>
-          <Typography variant="h6" color={theme.palette.secondary.main}>
+       <Typography variant="h6"  color={theme.palette.secondary.main}   fontFamily={theme.typography.fontFamily}>
             {counts}  
           </Typography>
         </Box>
@@ -59,14 +59,7 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
           marginTop: '1rem',
         }}
       >
-        <Typography
-          variant="h4"
-          color={theme.palette.secondary.main}
-          sx={{
-            fontSize: {xs: '1.25rem', md: '1.5rem'},
-            fontWeight: {xs: 600, md: 700},
-          }}
-        >
+       <Typography variant="h2"  color={theme.palette.secondary.main}   fontFamily={theme.typography.fontFamily}>
          End Price
         </Typography>
         <Box sx={{display: 'flex', gap: '2px'}}>
@@ -76,7 +69,7 @@ export default function FareBreakdownCard({price,counts,totalPrice}) {
           >
            {price * counts}
           </Typography>
-          <Typography fontWeight={600}> Rial </Typography>
+         <Typography variant="h6"  color={theme.palette.secondary.main}   fontFamily={theme.typography.fontFamily}> Rial </Typography>
         </Box>
       </Box>
     </FareBreakdown>

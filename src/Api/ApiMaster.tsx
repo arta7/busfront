@@ -1,6 +1,6 @@
 
- import axios from 'axios'
-import {Address} from './Address'
+import axios from 'axios'
+import { Address } from './Address'
 import { useNavigate } from "react-router-dom";
 // import Toast from 'react-native-simple-toast';
 // import { RouteName } from '../routes';
@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 //   //  console.log('address',Address.URL + Address.Account.Register)
 //   axios.post(Address.URL + Address.Account.Register,params,axisConfig)
 //   .then( (response)=> {
-         
+
 //           console.log('response',response.data) 
 //           _updateIndicator(false) 
 //           self.navigate('Login')
@@ -26,110 +26,108 @@ import { useNavigate } from "react-router-dom";
 //   .catch( (error)=> {
 //     _updateIndicator(false)
 //     alert(error.response.data.data[0].messages[0].message);
-      
+
 //     console.log('errors',error.response.data.data[0].messages[0].message)  
 //   })
 // }
 
 
-export function LoginAPI(_phone,self,userData,setUserData,setLoading)
-{
-   var params =  new FormData();
-    params.append("Phone",_phone)
+export function LoginAPI(_phone, self, userData, setUserData, setLoading) {
+  var params = new FormData();
+  params.append("Phone", _phone)
   axios({
     url: Address.URL + Address.Login.Login,
     method: 'POST',
-     data: params,
+    data: params,
     headers: {
       'accept': 'text/plain',
-      'Content-Type' : 'multipart/form-data'
+      'Content-Type': 'multipart/form-data'
     }
   })
-  .then( (response)=> {
-         
-          //  console.log('response login Data',response.data.status) 
-          if(response.data.status == 1)
-            {
-                localStorage.setItem('Mobile',_phone)
-              const myNextList = [...userData];
-              const DatesStep = myNextList;
-              DatesStep[0].Mobile = _phone;
-              
-              setUserData(myNextList)
-              localStorage.setItem('storageData',JSON.stringify(myNextList))
-             
-        
-              // alert(response.data.message);
-          
+    .then((response) => {
+
+      //  console.log('response login Data',response.data.status) 
+      if (response.data.status == 1) {
+        localStorage.setItem('Mobile', _phone)
+        const myNextList = [...userData];
+        const DatesStep = myNextList;
+        DatesStep[0].Mobile = _phone;
+
+        setUserData(myNextList)
+        localStorage.setItem('storageData', JSON.stringify(myNextList))
+
+
+        // alert(response.data.message);
+
         //    self.navigate(RouteName.OTP_VERYFY_SCREEN)
-          }
-         
-            // setLoading(false)
-        
-  })
-  .catch( (error)=> {
-  
-    // setLoading(false)
-    console.log('errors',error)  
-   
-  })
+      }
+
+      setLoading(false)
+
+    })
+    .catch((error) => {
+
+      // setLoading(false)
+      console.log('errors', error)
+
+    })
 }
 
 
 
-export function VerifyAPI(_phone,_code,self,setLoading,userData,setUserData,sendnavigate)
-{
+export function VerifyAPI(_phone, _code, self, setLoading, userData, setUserData, sendnavigate,setOpen) {
   //  const navigate = useNavigate();
-    var params ={
-      "Phone":_phone,
-      "VerificationCode":_code
-    }
+  var params = {
+    "Phone": _phone,
+    "VerificationCode": _code
+  }
   axios({
     url: Address.URL + Address.Login.verify,
     method: 'POST',
-     data: params,
+    data: params,
     headers: {
       'accept': 'text/plain',
-      'Content-Type' : 'multipart/form-data'
+      'Content-Type': 'multipart/form-data'
     }
   })
-  .then( (response)=> {
-         
-          console.log('response verify Data',response) 
-          if(response.data.status == 1)
-            {
-             
-                localStorage.setItem('Token',response.data.data.token)
-                localStorage.setItem('Name',response.data.data.firstName + ' ' + response.data.data.lastName)
-              const myNextList = [...userData];
-              const DatesStep = myNextList;
-              DatesStep[0].Name  = response.data.data.firstName + ' ' + response.data.data.lastName ;
-              DatesStep[0].Token  = response.data.data.token ;
-              setUserData(myNextList)
-              localStorage.setItem('storageData',JSON.stringify(myNextList))
-              alert(response.data.message);
-             
-               sendnavigate(true)
-              self('/')
-            // navigate('/Home')
-             
-            }
-            else
-            {
-                alert(response.data.errors.VerificationCode);
-                  sendnavigate(false)
-            }
-            setLoading(false)
-            return true;
-        
-  })
-  .catch( (error)=> {
+    .then((response) => {
+
+      console.log('response verify Data', response)
+      if (response.data.status == 1) {
+
+        localStorage.setItem('Token', response.data.data.token)
+        localStorage.setItem('Name', response.data.data.firstName + ' ' + response.data.data.lastName)
+        const myNextList = [...userData];
+        const DatesStep = myNextList;
+        DatesStep[0].Name = response.data.data.firstName + ' ' + response.data.data.lastName;
+        DatesStep[0].Token = response.data.data.token;
+        setUserData(myNextList)
+        localStorage.setItem('storageData', JSON.stringify(myNextList))
+        // alert(response.data.message);
+
+        sendnavigate(true)
+        self('/')
+        // navigate('/Home')
+        setLoading(false)
+        setOpen(false)
+      }
+      else {
+        // alert(response.data.errors.VerificationCode);
+
+        alert('Code is not Correct'); 
+        sendnavigate(false)
+      }
+
+      return true;
+
+    })
+    .catch((error) => {
       sendnavigate(false)
-    setLoading(false)
-    alert('کد تایید نامعتبر است');
-    console.log('errors',error)  
-       return false;
-  })
+      setLoading(false)
+      alert('Code is not Correct');
+      console.log('errors', error)
+      return false;
+    })
 }
 
 
@@ -143,13 +141,13 @@ export function VerifyAPI(_phone,_code,self,setLoading,userData,setUserData,send
 //    console.log('address',Address.URL + Address.Account.ForgetPassword)
 //   axios.post(Address.URL + Address.Account.ForgetPassword,params,axisConfig)
 //   .then( (response)=> {
-         
+
 //           console.log('response forget pass :',response.data.ok) 
 //           _updateIndicator(false) 
 //           if(response.data.ok && check==true)
 //           {
 //            self.navigate('OTPAccept',{email:_email})
-      
+
 //           }
 //           else  if(response.data.ok && check==false)
 //           {
@@ -167,199 +165,192 @@ export function VerifyAPI(_phone,_code,self,setLoading,userData,setUserData,send
 
 
 
-export function GetCities(setData,Data,self,setLoading,axisConfigToken)
-{
-  axios.get(Address.URL + Address.Bus.Cities,axisConfigToken)
-  .then( (response)=> {
+export function GetCities(setData, Data, self, setLoading, axisConfigToken) {
+  axios.get(Address.URL + Address.Bus.Cities, axisConfigToken)
+    .then((response) => {
 
 
-      console.log('response',response.data.data)
+      console.log('response', response.data.data)
       setData(response.data.data)
       setLoading(false)
-        
-  })
-  .catch( (error)=> {
-    console.log('errors',error)  
-    setLoading(false)
-  })
+
+    })
+    .catch((error) => {
+      console.log('errors', error)
+      setLoading(false)
+    })
 }
 
 
-export function GetProfile(setData,Data,self,setLoading,axisConfigToken)
-{
-  axios.get(Address.URL + Address.Login.GetProfile,axisConfigToken)
-  .then( (response)=> {
+export function GetProfile(setData, Data, self, setLoading, axisConfigToken) {
+  axios.get(Address.URL + Address.Login.GetProfile, axisConfigToken)
+    .then((response) => {
 
 
-      console.log('response',response.data.data)
+      console.log('response', response.data.data)
       setData(response.data.data)
       setLoading(false)
-        
-  })
-  .catch( (error)=> {
-    console.log('errors',error)  
-    setLoading(false)
-  })
+
+    })
+    .catch((error) => {
+      console.log('errors', error)
+      setLoading(false)
+    })
 }
 
 
 
-export function BusSearch(_originCity,_destinationCity,_date,HeaderValue,setLoading,SetData,setUserData,userData,self)
-{
-    var params ={
-      "originCity": _originCity,
-      "destinationCity": _destinationCity,
-      "date": _date
-    }
+export function BusSearch(_originCity, _destinationCity, _date, HeaderValue, setLoading, SetData, setUserData, userData, self) {
+  var params = {
+    "originCity": _originCity,
+    "destinationCity": _destinationCity,
+    "date": _date
+  }
 
-    console.log('params',params)
-    
+  console.log('params', params)
+
   axios({
     url: Address.URL + Address.Bus.search,
     method: 'POST',
-     data: params,
+    data: params,
     headers: {
       'accept': 'text/plain',
       // 'Content-Type' : 'multipart/form-data',
       'Authorization': HeaderValue
     }
   })
-  .then( (response)=> {
-         
-          console.log('response bus Data',response.data.data) 
-          SetData(response.data.data)
-      
+    .then((response) => {
 
-          const myNextList = [...userData];
-          const DatesStep = myNextList;
-          DatesStep[0].RequestNumber = response.data.data?.requestNumber;
-          setUserData(myNextList)
-          setLoading(false)
-        
-  })
-  .catch( (error)=> {
-    console.log('errors',error)  
-    setLoading(false)
-  })
+      console.log('response bus Data', response.data.data)
+      SetData(response.data.data)
+
+
+      const myNextList = [...userData];
+      const DatesStep = myNextList;
+      DatesStep[0].RequestNumber = response.data.data?.requestNumber;
+      setUserData(myNextList)
+      setLoading(false)
+
+    })
+    .catch((error) => {
+      console.log('errors', error)
+      setLoading(false)
+    })
 }
 
 
 
 
-export function BusDetailss(_requestNumber,_sourceCode,_busCode,HeaderValue,setLoading,SetData,self,setReturnData)
-{
-    var params ={
-      "requestNumber": _requestNumber,
-      "sourceCode": _sourceCode,
-      "busCode": _busCode
-    }
-    setLoading(true)
-    
+export function BusDetailss(_requestNumber, _sourceCode, _busCode, HeaderValue, setLoading, SetData, self, setReturnData) {
+  var params = {
+    "requestNumber": _requestNumber,
+    "sourceCode": _sourceCode,
+    "busCode": _busCode
+  }
+  setLoading(true)
+
   axios({
     url: Address.URL + Address.Bus.busdetails,
     method: 'POST',
-     data: params,
+    data: params,
     headers: {
       'accept': 'text/plain',
       // 'Content-Type' : 'multipart/form-data',
       'Authorization': HeaderValue
     }
   })
-  .then( (response)=> {
-         
-          console.log('response bus details Data',response.data.data) 
-          SetData(response.data.data)
-          setLoading(false)
-          setReturnData(true)
-        
-  })
-  .catch( (error)=> {
-    console.log('errors bus details : ',error)  
-    setLoading(false)
-    setReturnData(false)
-  })
+    .then((response) => {
+
+      console.log('response bus details Data', response.data.data)
+      SetData(response.data.data)
+      setLoading(false)
+      setReturnData(true)
+
+    })
+    .catch((error) => {
+      console.log('errors bus details : ', error)
+      setLoading(false)
+      setReturnData(false)
+    })
 }
 
 
-export function busPreReserves(_requestNumber,_sourceCode,_busCode,HeaderValue,_passengers,_price,_telephone,_contact
-  ,_clientUserTelephone,_clientUserEmail,setLoading,axisConfigToken,_setReturnValue,self)
-{
-    var params ={
+export function busPreReserves(_requestNumber, _sourceCode, _busCode, HeaderValue, _passengers, _price, _telephone, _contact
+  , _clientUserTelephone, _clientUserEmail, setLoading, axisConfigToken, _setReturnValue, self) {
+  var params = {
     "requestNumber": _requestNumber,
-  "busCode": _busCode,
-  "sourceCode": _sourceCode,
-  "passengers": _passengers,
-  "price": _price,
-  "telephone": _telephone,
-  "contact": _contact,
-  "clientUserTelephone": _clientUserTelephone,
-  "clientUserEmail": _clientUserEmail
-    }
-    console.log('params =>',params)
-    setLoading(true)
-    
+    "busCode": _busCode,
+    "sourceCode": _sourceCode,
+    "passengers": _passengers,
+    "price": _price,
+    "telephone": _telephone,
+    "contact": _contact,
+    "clientUserTelephone": _clientUserTelephone,
+    "clientUserEmail": _clientUserEmail
+  }
+  console.log('params =>', params)
+  setLoading(true)
+
   axios({
     url: Address.URL + Address.Bus.busReserves,
     method: 'POST',
-     data: params,
+    data: params,
     headers: {
       'accept': 'text/plain',
       // 'Content-Type' : 'multipart/form-data',
       'Authorization': HeaderValue
     }
   })
-  .then( (response)=> {
-         
-          console.log('response bus busPreReserves : ',response.data.data) 
-          ChargeAccount(_price,setLoading,axisConfigToken,_setReturnValue,self)
-         // Toast.showWithGravity(response.data.data.reserveRequestId, Toast.LONG, Toast.CENTER);
-         // SetData(response.data.data)
-          //setLoading(false)
-        
-  })
-  .catch( (error)=> {
-    alert(error.response.data.message)  
-    setLoading(false)
-  })
+    .then((response) => {
+
+      console.log('response bus busPreReserves : ', response.data.data)
+      ChargeAccount(_price, setLoading, axisConfigToken, _setReturnValue, self)
+      // Toast.showWithGravity(response.data.data.reserveRequestId, Toast.LONG, Toast.CENTER);
+      // SetData(response.data.data)
+      //setLoading(false)
+
+    })
+    .catch((error) => {
+      alert(error.response.data.message)
+      setLoading(false)
+    })
 }
 
 
-export function ChargeAccount(_amount,setLoading,axisConfigToken,_setReturnValue,self)
-{
-   // console.log('params =>',params)
-    setLoading(true)
-    
-    axios.get(Address.URL + Address.ChargeAccount.Charge + _amount,axisConfigToken)
-  .then( (response)=> {
-         
-          console.log('response bus charge account : ',response.data.data) 
-         // Toast.showWithGravity(response.data.data, Toast.LONG, Toast.CENTER);
-         // SetData(response.data.data)
-         BillingFactor(response.data.data.id,setLoading,axisConfigToken,_setReturnValue,self)
-         // setLoading(false)
-        
-  })
-  .catch( (error)=> {
-    console.log('errors bus charge account  : ',error)  
-    setLoading(false)
-  })
+export function ChargeAccount(_amount, setLoading, axisConfigToken, _setReturnValue, self) {
+  // console.log('params =>',params)
+  setLoading(true)
+
+  axios.get(Address.URL + Address.ChargeAccount.Charge + _amount, axisConfigToken)
+    .then((response) => {
+
+      console.log('response bus charge account : ', response.data.data)
+      // Toast.showWithGravity(response.data.data, Toast.LONG, Toast.CENTER);
+      // SetData(response.data.data)
+      BillingFactor(response.data.data.id, setLoading, axisConfigToken, _setReturnValue, self)
+      // setLoading(false)
+
+    })
+    .catch((error) => {
+      console.log('errors bus charge account  : ', error)
+      setLoading(false)
+    })
 }
 
-export function BillingFactor(_factorId,setLoading,axisConfigToken,_setReturnValue,self)
-{
- 
-    setLoading(true)
-    
-    axios.get(Address.URL + Address.ChargeAccount.BillingFactor + _factorId,axisConfigToken)
-  .then( (response)=> {
-         
-          
-         // Toast.showWithGravity(response.data.data, Toast.LONG, Toast.CENTER);
-         // SetData(response.data.data)
-         _setReturnValue(response.data.data)
-          setLoading(false)
-          console.log('response bus BillingFactor : ',response.data.data) 
-          window.open(response.data.data,"_self");
+export function BillingFactor(_factorId, setLoading, axisConfigToken, _setReturnValue, self) {
+
+  setLoading(true)
+
+  axios.get(Address.URL + Address.ChargeAccount.BillingFactor + _factorId, axisConfigToken)
+    .then((response) => {
+
+
+      // Toast.showWithGravity(response.data.data, Toast.LONG, Toast.CENTER);
+      // SetData(response.data.data)
+      _setReturnValue(response.data.data)
+      setLoading(false)
+      console.log('response bus BillingFactor : ', response.data.data)
+      window.open(response.data.data, "_self");
 
       //     window.addEventListener('message', handlePaymentMessage, false);
 
@@ -374,21 +365,21 @@ export function BillingFactor(_factorId,setLoading,axisConfigToken,_setReturnVal
       //     // navigate('/success'); // Redirect or perform the desired action
       //   }
       // }
-      
+
       // return () => window.removeEventListener('message', handlePaymentMessage);
       //     let history = useHistory();
 
       //  history.push("/home");
-    
-        
-  }
 
 
-)
-  .catch( (error)=> {
-    console.log('errors bus charge account  : ',error)  
-    setLoading(false)
-  })
+    }
+
+
+    )
+    .catch((error) => {
+      console.log('errors bus charge account  : ', error)
+      setLoading(false)
+    })
 }
 
 

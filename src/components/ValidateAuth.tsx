@@ -36,7 +36,7 @@ const ValidateAuth: React.FC = () => {
       // Check if the user is authenticated. If not, navigate to login.
       if (!isAuthenticated  && location.pathname != '/'  && location.pathname != '/about' 
         && location.pathname != '/privacy-policy'  && location.pathname != '/contactus' && location.pathname != '/refund-policy'
-       && location.pathname != '/terms-and-conditions'
+       && location.pathname != '/terms-and-conditions'  && location.pathname != '/MapList' 
       ) {
         navigate('/Logins');
       }

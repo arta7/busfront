@@ -35,7 +35,7 @@ const AdminLayout = ({children}: LayoutProps) => {
         xs
       >
         {' '}
-        <Grid alignItems={'stretch'} item xs>
+        <Grid alignItems={'stretch'}  item xs>
           <Navbar />
         </Grid>
         <Grid item>{children}</Grid>
