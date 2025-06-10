@@ -1,0 +1,57 @@
+.tabBoxTwo {
+    height: 60px;
+    border-top: 0.5px solid gray;
+    margin-horizontal: 5px;  /*  This won't work in CSS.  Use margin-left and margin-right */
+    margin-left: 5px;
+    margin-right: 5px;
+    display: flex;          /*  Use flexbox for layout */
+    flex-direction: row;
+    align-items: center;     /* Vertically center items */
+  }
+  
+  .dayButton {
+    width: 25%;
+    height: 100%;
+    justify-content: center; /*  Not valid CSS. Use flexbox properties */
+    align-items: center;    /*  Not valid CSS. Use flexbox properties */
+    display: flex;          /*  Enable flexbox */
+    flex-direction: row;     /*  Arrange items in a row */
+    border-right: 1px solid gray;
+    padding-top: 5px;
+    border-left: none; /* added this to remove default border */
+    border-top: none;
+    border-bottom: none;
+    background-color: transparent; /* added this to remove default background */
+    cursor: pointer; /* Add a pointer cursor on hover */
+  }
+  
+  .dayButton:hover {
+    background-color: #f0f0f0; /* Add a light background on hover */
+  }
+  
+  .dayButtonText {
+    text-align: center;
+    color: black;
+    font-size: 12px;
+    font-style: italic;
+  }
+  
+  .dateDisplay {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dateText {
+    text-align: center;
+    color: black;
+    font-size: 12px;
+  }
+  
+  .icon {
+    margin-left: 5px; /* Corrected from marginHorizontal */
+    margin-right: 5px;
+  }
+  

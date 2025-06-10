@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+   
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>کلان</title>
+    <link rel="icon" type="image/svg+xml" href="/src/assets/faveicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=IranianSans:wght@700&display=swap" rel="stylesheet" />
+     <link rel="stylesheet" href="https://static.neshan.org/sdk/mapboxgl/v1.13.2/neshan-sdk/v1.1.1/index.css" />
+  <script src="https://static.neshan.org/sdk/mapboxgl/v1.13.2/neshan-sdk/v1.1.1/index.js"></script>
+
+    <style>
+    @font-face {
+      font-family: 'IranianSans';
+      src: url('/src/assets/fonts/IranianSans.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    body {
+      font-family: 'IranianSans';
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+
+
+
+    <script>
+  // Wait for both Vite and DOM to be ready
+  window.addEventListener('vite:before-full-reload', () => {
+    if (!window.chatina) {
+      window.chatina = { bId: "6834045e40b2a2baf1fa3e9f" };
+      
+      const container = document.createElement('div');
+      container.id = 'chatina-root';
+      document.body.appendChild(container);
+      
+      const css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'https://cdn.chatina.ai/static/widget.css';
+      css.crossOrigin = 'anonymous';
+      document.head.appendChild(css);
+      
+      setTimeout(() => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.chatina.ai/static/widget.js';
+        script.crossOrigin = 'anonymous';
+        document.body.appendChild(script);
+      }, 1500);
+    }
+  });
+</script>
+
+
+  </body>
+</html>
